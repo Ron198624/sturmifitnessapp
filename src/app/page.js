@@ -2,27 +2,27 @@ export default function HomePage() {
   return (
     <div className="container">
 
-      {/* Hero Card */}
-      <div className="card">
+      <div className="card" style={{ textAlign: "center", padding: "60px 30px" }}>
         <h1>Willkommen bei SturmiFitness</h1>
-        <p className="text-muted">
-          Deine persönliche Fitness‑App zum Erfassen, Analysieren und Verbessern deiner Trainingsleistungen.
+
+        <p style={{ color: "var(--text-dim)", fontSize: "1.2rem", marginBottom: "30px" }}>
+          Deine futuristische Fitness‑App für Analyse, Fortschritt und smarte Trainingsdaten.
         </p>
 
-        <div style={{ marginTop: "20px", display: "flex", gap: "12px" }}>
-          <a href="/training" className="btn">Training erfassen</a>
-          <a href="/verlauf" className="btn-secondary">Verlauf ansehen</a>
+        <div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
+          <a href="/uebungen" className="btn">Übungen ansehen</a>
+          <a href="/analyse" className="btn-secondary">Analyse starten</a>
         </div>
       </div>
 
-      {/* Info Card */}
       <div className="card">
-        <h2>Was du hier machen kannst</h2>
+        <h2>Was dich erwartet</h2>
+
         <ul>
-          <li>Trainingseinträge speichern</li>
-          <li>Deine Fortschritte analysieren</li>
-          <li>Übungen verwalten</li>
-          <li>Diagramme und Statistiken ansehen</li>
+          <li>📊 Fortschrittliche Trainingsanalyse</li>
+          <li>💪 Übersicht deiner Übungen</li>
+          <li>🧠 Automatische Volumen‑ und PR‑Berechnung</li>
+          <li>🔥 Neon‑Cyber‑Gym‑Design für maximale Motivation</li>
         </ul>
       </div>
 

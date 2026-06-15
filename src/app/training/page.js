@@ -13,7 +13,19 @@ export default function TrainingPage() {
   const [editMode, setEditMode] = useState(false);
   const [editEntry, setEditEntry] = useState(null);
 
-  // Daten laden
+  const uebungsliste = [
+    "Rudermaschine",
+    "Brustpresse",
+    "Butterfly",
+    "Reverse Butterfly",
+    "Latzug",
+    "Beinpresse",
+    "Bizepscurl",
+  ];
+
+  // -----------------------------
+  // 1. Daten aus Supabase laden
+  // -----------------------------
   useEffect(() => {
     async function loadEntries() {
       const { data, error } = await supabase
@@ -32,6 +44,7 @@ export default function TrainingPage() {
         uebung: row.Übung,
         gewicht: row.Gewicht,
         wiederholungen: row.Wiederholungen,
+        volumen: row.Gewicht * row.Wiederholungen,
       }));
 
       setEntries(mapped);
@@ -40,7 +53,9 @@ export default function TrainingPage() {
     loadEntries();
   }, []);
 
-  // Neuen Eintrag speichern
+  // -----------------------------
+  // 2. Neuen Eintrag speichern
+  // -----------------------------
   async function addEntry(e) {
     e.preventDefault();
 
@@ -78,13 +93,16 @@ export default function TrainingPage() {
         uebung: inserted.Übung,
         gewicht: inserted.Gewicht,
         wiederholungen: inserted.Wiederholungen,
+        volumen: inserted.Gewicht * inserted.Wiederholungen,
       },
     ]);
 
     resetForm();
   }
 
-  // Löschen
+  // -----------------------------
+  // 3. Löschen
+  // -----------------------------
   async function deleteEntry(id) {
     const { error } = await supabase
       .from("training_entries")
@@ -99,7 +117,9 @@ export default function TrainingPage() {
     setEntries((prev) => prev.filter((e) => e.id !== id));
   }
 
-  // Bearbeiten starten
+  // -----------------------------
+  // 4. Bearbeiten starten
+  // -----------------------------
   function startEdit(entry) {
     setEditMode(true);
     setEditEntry(entry);
@@ -109,7 +129,9 @@ export default function TrainingPage() {
     setWiederholungen(entry.wiederholungen);
   }
 
-  // Bearbeitung speichern
+  // -----------------------------
+  // 5. Bearbeitung speichern
+  // -----------------------------
   async function saveEdit(e) {
     e.preventDefault();
 
@@ -146,6 +168,9 @@ export default function TrainingPage() {
     resetForm();
   }
 
+  // -----------------------------
+  // 6. Formular zurücksetzen
+  // -----------------------------
   function resetForm() {
     setDatum("");
     setUebung("");
@@ -153,8 +178,13 @@ export default function TrainingPage() {
     setWiederholungen("");
   }
 
+  // -----------------------------
+  // 7. UI Rendering
+  // -----------------------------
   return (
     <div className="container">
+
+      {/* FORM CARD */}
       <div className="card">
         <h1>Training erfassen</h1>
 
@@ -168,12 +198,18 @@ export default function TrainingPage() {
           />
 
           <label>Übung</label>
-          <input
-            type="text"
+          <select
             value={uebung}
             onChange={(e) => setUebung(e.target.value)}
             required
-          />
+          >
+            <option value="">Bitte wählen</option>
+            {uebungsliste.map((u) => (
+              <option key={u} value={u}>
+                {u}
+              </option>
+            ))}
+          </select>
 
           <label>Gewicht (kg)</label>
           <input
@@ -212,15 +248,20 @@ export default function TrainingPage() {
         </form>
       </div>
 
+      {/* LIST CARD */}
       <div className="card">
         <h2>Erfasste Einträge</h2>
 
         <ul>
           {entries.map((entry) => (
-            <li key={entry.id} style={{ marginBottom: "12px" }}>
-              <strong>{entry.datum}</strong> – {entry.uebung} –{" "}
-              {entry.gewicht} kg × {entry.wiederholungen}
+            <li key={entry.id}>
+              <strong style={{ color: "var(--neon)", textShadow: "var(--neon-glow)" }}>
+                {entry.datum}
+              </strong>
               <br />
+              {entry.uebung} – {entry.gewicht} kg × {entry.wiederholungen}
+              <br />
+
               <button
                 className="btn-secondary"
                 style={{ marginTop: "8px", marginRight: "8px" }}
@@ -228,6 +269,7 @@ export default function TrainingPage() {
               >
                 Bearbeiten
               </button>
+
               <button
                 className="btn-danger"
                 style={{ marginTop: "8px" }}
@@ -239,6 +281,7 @@ export default function TrainingPage() {
           ))}
         </ul>
       </div>
+
     </div>
   );
 }

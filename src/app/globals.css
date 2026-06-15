@@ -1,189 +1,193 @@
+/* -----------------------------------
+   GLOBAL DARK NEON GYM THEME
+----------------------------------- */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0a0a0a;
+  --bg-card: #111;
+  --text: #e5e5e5;
+  --text-dim: #999;
+  --neon: #32cc12;
+  --neon-glow: 0 0 12px #32cc12;
+  --radius: 10px;
+  --transition: 0.2s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-html {
-  height: 100%;
-}
-
-html,
+/* Remove scrollbars on X */
 body {
-  max-width: 100vw;
   overflow-x: hidden;
 }
 
-body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+/* -----------------------------------
+   NAVBAR
+----------------------------------- */
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px;
-  background: #111;
-  color: white;
+  padding: 18px 28px;
+  background: #0f0f0f;
+  border-bottom: 1px solid var(--neon);
+  box-shadow: var(--neon-glow);
 }
 
 .logo {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: bold;
+  color: var(--neon);
+  text-shadow: var(--neon-glow);
 }
 
 .nav-right a {
-  margin-left: 20px;
-  color: #ddd;
+  margin-left: 24px;
+  color: var(--text);
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 1.1rem;
+  transition: var(--transition);
 }
 
 .nav-right a:hover {
-  color: white;
-}
-.home-container {
-  text-align: center;
-  padding: 80px 20px;
+  color: var(--neon);
+  text-shadow: var(--neon-glow);
 }
 
-.home-title {
-  font-size: 2.4rem;
-  margin-bottom: 10px;
+/* -----------------------------------
+   CONTAINER & CARDS
+----------------------------------- */
+
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
 }
 
-.home-subtitle {
-  font-size: 1.2rem;
-  color: #888;
+.card {
+  background: var(--bg-card);
+  padding: 24px;
+  border-radius: var(--radius);
   margin-bottom: 30px;
+  border: 1px solid #1a1a1a;
+  box-shadow: 0 0 10px #000, var(--neon-glow);
 }
 
-.home-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+/* -----------------------------------
+   HEADINGS
+----------------------------------- */
+
+h1, h2 {
+  color: var(--neon);
+  text-shadow: var(--neon-glow);
+  margin-bottom: 16px;
 }
 
-.btn-primary,
-.btn-secondary {
+/* -----------------------------------
+   BUTTONS
+----------------------------------- */
+
+.btn {
+  background: var(--neon);
+  color: #000;
   padding: 12px 20px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-size: 1rem;
-  transition: 0.2s;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: var(--transition);
+  box-shadow: var(--neon-glow);
 }
 
-.btn-primary {
-  background: #0070f3;
-  color: white;
-}
-
-.btn-primary:hover {
-  background: #0059c1;
+.btn:hover {
+  background: #28a50f;
+  box-shadow: 0 0 18px #32cc12;
 }
 
 .btn-secondary {
-  background: #333;
-  color: white;
+  background: #222;
+  color: var(--text);
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--neon);
+  cursor: pointer;
+  transition: var(--transition);
 }
 
 .btn-secondary:hover {
-  background: #555;
-}
-.uebungen-container {
-  padding: 40px 20px;
+  color: var(--neon);
+  box-shadow: var(--neon-glow);
 }
 
-.uebungen-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 20px;
-}
-
-.uebung-item {
-  background: #1a1a1a;
-  padding: 16px;
-  margin-bottom: 12px;
-  border-radius: 6px;
-  display: flex;
-  justify-content: space-between;
-  color: white;
-}
-.training-container {
-  padding: 40px 20px;
-}
-
-.training-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-width: 300px;
-  margin-bottom: 30px;
-}
-
-.training-form select,
-.training-form input {
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #444;
-  background: #222;
-  color: white;
-}
-
-.training-form button {
-  padding: 12px;
-  background: #0070f3;
-  color: white;
-  border: none;
-  border-radius: 6px;
+.btn-danger {
+  background: #440000;
+  color: #ff4444;
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  border: 1px solid #ff4444;
   cursor: pointer;
+  transition: var(--transition);
 }
 
-.training-form button:hover {
-  background: #0059c1;
+.btn-danger:hover {
+  background: #660000;
+  box-shadow: 0 0 12px #ff4444;
 }
 
-.training-list {
+/* -----------------------------------
+   FORMS
+----------------------------------- */
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border-radius: var(--radius);
+  border: 1px solid #333;
+  background: #0f0f0f;
+  color: var(--text);
+  transition: var(--transition);
+}
+
+input:focus, select:focus {
+  border-color: var(--neon);
+  box-shadow: var(--neon-glow);
+  outline: none;
+}
+
+/* -----------------------------------
+   LISTS
+----------------------------------- */
+
+ul {
   list-style: none;
   padding: 0;
 }
 
-.training-item {
-  background: #1a1a1a;
-  padding: 16px;
+li {
+  background: #0f0f0f;
+  padding: 14px;
+  border-radius: var(--radius);
   margin-bottom: 12px;
-  border-radius: 6px;
-  color: white;
+  border: 1px solid #1a1a1a;
+  box-shadow: var(--neon-glow);
+}
+.header {
+  height: 160px;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 30px;
+  background-color: var(--bg);
+  border-bottom: 1px solid var(--neon);
+}
+
+.logo-container img {
+  margin-right: 20px;
 }
