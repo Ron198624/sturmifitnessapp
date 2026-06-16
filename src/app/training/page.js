@@ -8,7 +8,7 @@ console.log("ENV URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
 console.log("ENV KEY:", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? "OK" : "MISSING");
 
 export default function TrainingPage() {
-  const supabase = getSupabaseClient();
+ 
 
   const [exercise, setExercise] = useState("");
   const [weight, setWeight] = useState("");
