@@ -1,10 +1,15 @@
 "use client";
 
+
 import { useState } from "react";
 import { getSupabaseClient } from "@/app/lib/supabaseClient";
-const supabase = getSupabaseClient();
+
+console.log("ENV URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
+console.log("ENV KEY:", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? "OK" : "MISSING");
 
 export default function TrainingPage() {
+  const supabase = getSupabaseClient();
+
   const [exercise, setExercise] = useState("");
   const [weight, setWeight] = useState("");
   const [reps, setReps] = useState("");
@@ -18,18 +23,22 @@ export default function TrainingPage() {
 
     const volume = Number(weight) * Number(reps) * Number(sets);
 
+    const payload = {
+      Datum: new Date().toISOString().split("T")[0],
+      Uebung: exercise,
+      Gewicht: Number(weight),
+      Wiederholungen: Number(reps),
+      Saetze: Number(sets),
+      Volumen: volume,
+    };
+
+    console.log("Insert payload:", payload);
+
     const { data, error } = await supabase
       .from("training_entries")
-      .insert([
-        {
-          Datum: new Date().toISOString().split("T")[0],
-          Uebung: exercise,
-          Gewicht: Number(weight),
-          Wiederholungen: Number(reps),
-          Saetze: Number(sets),
-          Volumen: volume,
-        },
-      ]);
+      .insert([payload]);
+
+    console.log("Insert result:", { data, error });
 
     setLoading(false);
 
@@ -38,7 +47,6 @@ export default function TrainingPage() {
       return;
     }
 
-    // Felder zurücksetzen
     setExercise("");
     setWeight("");
     setReps("");
