@@ -1,15 +1,14 @@
 "use client";
 
-
 import { useEffect, useState } from "react";
 import { getSupabaseClient } from "@/app/lib/supabaseClient";
 import { BarChart, PieChart } from "@/app/components/ChartComponent";
-
 
 export const dynamic = "force-dynamic";
 
 export default function AnalysePage() {
   const supabase = getSupabaseClient();
+
   const [entries, setEntries] = useState([]);
 
   // -----------------------------------
@@ -29,17 +28,18 @@ export default function AnalysePage() {
 
       const mapped = data.map((row) => ({
         datum: row.Datum,
-        uebung: row.Übung,
+        uebung: row.Uebung,
         gewicht: row.Gewicht,
         wiederholungen: row.Wiederholungen,
-        volumen: row.Gewicht * row.Wiederholungen,
+        saetze: row.Saetze,
+        volumen: row.Volumen,
       }));
 
       setEntries(mapped);
     }
 
     load();
-  }, []);
+  }, [supabase]);
 
   // -----------------------------------
   // 2. Wochenvolumen
