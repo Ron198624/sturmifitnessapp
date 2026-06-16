@@ -4,16 +4,17 @@ import { useEffect, useState } from "react";
 import { getSupabaseClient } from "@/app/lib/supabaseClient";
 import { BarChart, PieChart } from "@/app/components/ChartComponent";
 
+// verhindert JEDES Prerendering
 export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
 
 export default function AnalysePage() {
+  // Supabase NUR im Browser initialisieren
   const supabase = getSupabaseClient();
 
   const [entries, setEntries] = useState([]);
 
-  // -----------------------------------
-  // 1. Daten aus Supabase laden
-  // -----------------------------------
   useEffect(() => {
     async function load() {
       const { data, error } = await supabase
@@ -41,9 +42,7 @@ export default function AnalysePage() {
     load();
   }, [supabase]);
 
-  // -----------------------------------
-  // 2. Wochenvolumen
-  // -----------------------------------
+  // Wochenvolumen
   const [weeklyVolume, setWeeklyVolume] = useState({});
 
   useEffect(() => {
@@ -66,9 +65,7 @@ export default function AnalysePage() {
     return Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
   }
 
-  // -----------------------------------
-  // 3. Muskelgruppen-Analyse
-  // -----------------------------------
+  // Muskelgruppen
   const muscleGroups = {
     "Rudermaschine": "Rücken",
     "Brustpresse": "Brust",
@@ -93,9 +90,7 @@ export default function AnalysePage() {
     setMuscleVolume(mv);
   }, [entries]);
 
-  // -----------------------------------
-  // 4. Top Übungen
-  // -----------------------------------
+  // Top Übungen
   const [topExercises, setTopExercises] = useState({});
 
   useEffect(() => {
@@ -109,9 +104,7 @@ export default function AnalysePage() {
     setTopExercises(totals);
   }, [entries]);
 
-  // -----------------------------------
-  // 5. Persönliche Rekorde (PRs)
-  // -----------------------------------
+  // PRs
   const [prs, setPRs] = useState({});
 
   useEffect(() => {
@@ -134,12 +127,8 @@ export default function AnalysePage() {
     setPRs(pr);
   }, [entries]);
 
-  // -----------------------------------
-  // 6. UI Rendering
-  // -----------------------------------
   return (
     <div className="container">
-
       <div className="card">
         <h1>Analyse Dashboard</h1>
         <p style={{ color: "var(--text-dim)", marginBottom: "20px" }}>
@@ -147,7 +136,6 @@ export default function AnalysePage() {
         </p>
       </div>
 
-      {/* Wochenvolumen */}
       <div className="card">
         <h2>Wochenvolumen</h2>
         <BarChart
@@ -156,7 +144,6 @@ export default function AnalysePage() {
         />
       </div>
 
-      {/* Muskelgruppen */}
       <div className="card">
         <h2>Muskelgruppen</h2>
         <PieChart
@@ -165,7 +152,6 @@ export default function AnalysePage() {
         />
       </div>
 
-      {/* Top Übungen */}
       <div className="card">
         <h2>Top Übungen</h2>
         <ul>
@@ -181,7 +167,6 @@ export default function AnalysePage() {
         </ul>
       </div>
 
-      {/* PRs */}
       <div className="card">
         <h2>Persönliche Rekorde</h2>
         <ul>
@@ -198,7 +183,6 @@ export default function AnalysePage() {
           ))}
         </ul>
       </div>
-
     </div>
   );
 }
