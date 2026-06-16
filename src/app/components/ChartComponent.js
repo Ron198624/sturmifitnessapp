@@ -1,4 +1,5 @@
 "use client";
+
 import { Bar, Pie } from "react-chartjs-2";
 import {
   Chart as ChartJS,
