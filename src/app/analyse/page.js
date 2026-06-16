@@ -1,18 +1,13 @@
 "use client";
 
-
-
 import { useEffect, useState } from "react";
-import { getSupabaseClient } from "@/app/lib/supabaseClient";
+import { supabase } from "@/utils/supabaseClient";
 import { BarChart, PieChart } from "@/app/components/ChartComponent";
 
-
-
 export default function AnalysePage() {
-  const supabase = getSupabaseClient();
-
   const [entries, setEntries] = useState([]);
 
+  // --- DATEN LADEN ---
   useEffect(() => {
     async function load() {
       const { data, error } = await supabase
@@ -38,8 +33,9 @@ export default function AnalysePage() {
     }
 
     load();
-  }, [supabase]);
+  }, []);
 
+  // --- WOCHENVOLUMEN ---
   const [weeklyVolume, setWeeklyVolume] = useState({});
 
   useEffect(() => {
@@ -62,6 +58,7 @@ export default function AnalysePage() {
     return Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
   }
 
+  // --- MUSKELGRUPPEN ---
   const muscleGroups = {
     "Rudermaschine": "Rücken",
     "Brustpresse": "Brust",
@@ -86,6 +83,7 @@ export default function AnalysePage() {
     setMuscleVolume(mv);
   }, [entries]);
 
+  // --- TOP ÜBUNGEN ---
   const [topExercises, setTopExercises] = useState({});
 
   useEffect(() => {
@@ -99,6 +97,7 @@ export default function AnalysePage() {
     setTopExercises(totals);
   }, [entries]);
 
+  // --- PRs ---
   const [prs, setPRs] = useState({});
 
   useEffect(() => {
@@ -121,6 +120,7 @@ export default function AnalysePage() {
     setPRs(pr);
   }, [entries]);
 
+  // --- UI ---
   return (
     <div className="container">
       <div className="card">

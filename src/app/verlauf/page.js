@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getSupabaseClient } from "@/app/lib/supabaseClient";
+import { supabase } from "@/utils/supabaseClient";
 const supabase = getSupabaseClient();
 import { BarChart, PieChart } from "@/app/components/ChartComponent";
 
