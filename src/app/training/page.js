@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "@/app/lib/supabaseClient";
+import { getSupabaseClient } from "@/app/lib/supabaseClient";
+const supabase = getSupabaseClient();
 
 export default function TrainingPage() {
   const [exercise, setExercise] = useState("");

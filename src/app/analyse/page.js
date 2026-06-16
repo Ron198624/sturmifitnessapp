@@ -1,7 +1,8 @@
 "use client";
 export const dynamic = "force-dynamic";
 import { useEffect, useState } from "react";
-import { supabase } from "@/app/lib/supabaseClient";
+import { getSupabaseClient } from "@/app/lib/supabaseClient";
+const supabase = getSupabaseClient();
 import { BarChart, PieChart } from "@/app/components/ChartComponent";
 
 export default function AnalysePage() {
