@@ -4,13 +4,9 @@ import { useEffect, useState } from "react";
 import { getSupabaseClient } from "@/app/lib/supabaseClient";
 import { BarChart, PieChart } from "@/app/components/ChartComponent";
 
-// verhindert JEDES Prerendering
 export const dynamic = "force-dynamic";
-export const fetchCache = "force-no-store";
-export const revalidate = 0;
 
 export default function AnalysePage() {
-  // Supabase NUR im Browser initialisieren
   const supabase = getSupabaseClient();
 
   const [entries, setEntries] = useState([]);
@@ -42,7 +38,6 @@ export default function AnalysePage() {
     load();
   }, [supabase]);
 
-  // Wochenvolumen
   const [weeklyVolume, setWeeklyVolume] = useState({});
 
   useEffect(() => {
@@ -65,7 +60,6 @@ export default function AnalysePage() {
     return Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
   }
 
-  // Muskelgruppen
   const muscleGroups = {
     "Rudermaschine": "Rücken",
     "Brustpresse": "Brust",
@@ -90,7 +84,6 @@ export default function AnalysePage() {
     setMuscleVolume(mv);
   }, [entries]);
 
-  // Top Übungen
   const [topExercises, setTopExercises] = useState({});
 
   useEffect(() => {
@@ -104,7 +97,6 @@ export default function AnalysePage() {
     setTopExercises(totals);
   }, [entries]);
 
-  // PRs
   const [prs, setPRs] = useState({});
 
   useEffect(() => {
