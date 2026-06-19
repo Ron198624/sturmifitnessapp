@@ -17,23 +17,22 @@ export default function CardioPage() {
     const formData = new FormData(e.target);
 
     const date = formData.get("date");
-    const exercise = formData.get("exercise");
     const distance_m = Number(formData.get("distance_m"));
-    const duration_min = Number(formData.get("duration_min"));
-    const exercise_type = formData.get("exercise_type");
+    const duration_min = Number(formData.get("duration_min")) || null;
 
     const { data: { user } } = await supabase.auth.getUser();
 
+    const payload = {
+      user_id: user.id,
+      date,
+      exercise_type: exerciseType,
+      distance_m,
+      duration_min
+    };
+
     const { error } = await supabase
       .from("cardio_entries")
-      .insert({
-        user_id: user.id,
-        date,
-        exercise,
-        distance_m,
-        duration_min,
-        exercise_type
-      });
+      .insert(payload);
 
     if (error) {
       setMessage("Fehler beim Speichern");
@@ -55,11 +54,6 @@ export default function CardioPage() {
         </div>
 
         <div>
-          <label>Übung:</label>
-          <input type="text" name="exercise" required />
-        </div>
-
-        <div>
           <label>Art:</label>
           <select
             name="exercise_type"
@@ -73,7 +67,6 @@ export default function CardioPage() {
           </select>
         </div>
 
-        {/* Dynamische Eingabefelder */}
         {exerciseType === "schwimmen" && (
           <div>
             <label>Distanz (Meter):</label>

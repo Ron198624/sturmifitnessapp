@@ -8,37 +8,39 @@ import SportIcon from "../components/SportIcon";
 
 export default function AnalysePage() {
   const [entries, setEntries] = useState([]);
+  const [cardioEntries, setCardioEntries] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // -------------------------------------------------------
-  // Daten aus Supabase laden
-  // -------------------------------------------------------
+  // Krafttraining laden
   useEffect(() => {
-    const loadData = async () => {
+    const loadTraining = async () => {
       const { data, error } = await supabase
-        .from("training")
+        .from("training_entries")
         .select("*");
 
-      if (!error && data) {
-        setEntries(data);
-      }
+      if (!error && data) setEntries(data);
       setLoading(false);
     };
 
-    loadData();
+    loadTraining();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="text-center text-white mt-10">
-        Lade Analyse…
-      </div>
-    );
-  }
+  // Cardio laden
+  useEffect(() => {
+    const loadCardio = async () => {
+      const { data, error } = await supabase
+        .from("cardio_entries")
+        .select("*");
 
-  // -------------------------------------------------------
-  // Muskelgruppen berechnen (Fix A)
-  // -------------------------------------------------------
+      if (!error && data) setCardioEntries(data);
+    };
+
+    loadCardio();
+  }, []);
+
+  if (loading) return <div className="text-white">Lade Analyse…</div>;
+
+  // Muskelgruppen
   const muscleGroups = {
     Brust: 0,
     Rücken: 0,
@@ -49,40 +51,40 @@ export default function AnalysePage() {
     Ganzkörper: 0
   };
 
+  // Krafttraining → Muskelgruppen
   entries.forEach((entry) => {
-    if (!entry.muscle_group || !entry.volume) return;
+    if (!entry.Uebung || !entry.Volumen) return;
 
-    if (!muscleGroups[entry.muscle_group]) {
-      muscleGroups[entry.muscle_group] = 0;
-    }
+    const map = {
+      "Rudermaschine": "Rücken",
+      "Brustpresse": "Brust",
+      "Butterfly": "Brust",
+      "Reverse Butterfly": "Schultern",
+      "Latzug": "Rücken",
+      "Beinpresse": "Beine",
+      "Bizepscurl": "Arme"
+    };
 
-    muscleGroups[entry.muscle_group] += entry.volume;
+    const mg = map[entry.Uebung];
+    if (mg) muscleGroups[mg] += entry.Volumen;
   });
 
-  // -------------------------------------------------------
-  // Wochenvolumen berechnen (Fix B)
-  // -------------------------------------------------------
+  // Cardio → Muskelgruppen
+  cardioEntries.forEach((entry) => {
+    if (!entry.exercise_type || !entry.distance_m) return;
+
+    if (entry.exercise_type === "schwimmen") {
+      muscleGroups["Ganzkörper"] += entry.distance_m;
+    }
+
+    if (entry.exercise_type === "laufen" || entry.exercise_type === "radfahren") {
+      muscleGroups["Beine"] += entry.distance_m * 1000;
+    }
+  });
+
+  // Wochenvolumen
   const weekMap = {};
 
-  entries.forEach((entry) => {
-    if (!entry.date || !entry.volume) return;
-
-    const date = new Date(entry.date);
-    const week = getWeekNumber(date);
-
-    if (!weekMap[week]) {
-      weekMap[week] = 0;
-    }
-
-    weekMap[week] += entry.volume;
-  });
-
-  const weekLabels = Object.keys(weekMap);
-  const weekValues = Object.values(weekMap);
-
-  // -------------------------------------------------------
-  // Hilfsfunktion: Kalenderwoche berechnen
-  // -------------------------------------------------------
   function getWeekNumber(date) {
     const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
     const dayNum = d.getUTCDay() || 7;
@@ -91,39 +93,60 @@ export default function AnalysePage() {
     return Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
   }
 
-  // -------------------------------------------------------
-  // Ausgabe
-  // -------------------------------------------------------
+  // Krafttraining → Wochenvolumen
+  entries.forEach((entry) => {
+    const date = new Date(entry.Datum);
+    const week = getWeekNumber(date);
+    if (!weekMap[week]) weekMap[week] = 0;
+    weekMap[week] += entry.Volumen;
+  });
+
+  // Cardio → Wochenvolumen
+  cardioEntries.forEach((entry) => {
+    const date = new Date(entry.date);
+    const week = getWeekNumber(date);
+    if (!weekMap[week]) weekMap[week] = 0;
+
+    if (entry.exercise_type === "schwimmen") {
+      weekMap[week] += entry.distance_m;
+    }
+
+    if (entry.exercise_type === "laufen" || entry.exercise_type === "radfahren") {
+      weekMap[week] += entry.distance_m * 1000;
+    }
+  });
+
+  const weekLabels = Object.keys(weekMap);
+  const weekValues = Object.values(weekMap);
+
+  // Kraftdiagramm
+  const exerciseMap = {};
+  entries.forEach((entry) => {
+    if (!entry.Uebung || !entry.Volumen) return;
+    if (!exerciseMap[entry.Uebung]) exerciseMap[entry.Uebung] = 0;
+    exerciseMap[entry.Uebung] += entry.Volumen;
+  });
+
+  const exerciseLabels = Object.keys(exerciseMap);
+  const exerciseValues = Object.values(exerciseMap);
+
   return (
     <div className="p-6 text-white">
       <h1 className="text-3xl font-bold mb-6">Analyse</h1>
 
-      {/* Wochenvolumen */}
       <div className="mb-10">
-        <h2 className="text-xl mb-2">Wochenvolumen (Kraft)</h2>
+        <h2 className="text-xl mb-2">Volumen pro Übung</h2>
+        <BarChart labels={exerciseLabels} values={exerciseValues} />
+      </div>
+
+      <div className="mb-10">
+        <h2 className="text-xl mb-2">Wochenvolumen (Kraft + Cardio)</h2>
         <BarChart labels={weekLabels} values={weekValues} />
       </div>
 
-      {/* Muskelgruppen */}
       <div className="mb-10">
         <h2 className="text-xl mb-2">Muskelgruppen Übersicht</h2>
         <PieChart data={muscleGroups} />
-      </div>
-
-      {/* Top Übungen */}
-      <div>
-        <h2 className="text-xl mb-2">Top Übungen</h2>
-        <div className="grid grid-cols-2 gap-4">
-          {entries.slice(0, 6).map((entry) => (
-            <div key={entry.id} className="bg-gray-800 p-3 rounded-lg flex items-center gap-3">
-              <SportIcon sport={entry.exercise} size={32} />
-              <div>
-                <p className="font-bold">{entry.exercise}</p>
-                <p className="text-sm text-gray-400">{entry.volume} Volumen</p>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );

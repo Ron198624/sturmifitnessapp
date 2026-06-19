@@ -14,6 +14,9 @@ const muscleGroups = {
   "Latzug": "Rücken",
   "Beinpresse": "Beine",
   "Bizepscurl": "Bizeps",
+  "Laufen": "Beine",
+  "Radfahren": "Beine",
+  "Schwimmen": "Ganzkörper"
 };
 
 export default function VerlaufPage() {
