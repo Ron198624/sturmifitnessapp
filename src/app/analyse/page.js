@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabaseClient";
-import BarChart from "../components/BarChart";
-import PieChart from "../components/PieChart";
-import SportIcon from "../components/SportIcon";
+import BarChart from "@/app/components/BarChart";
+import PieChart from "@/app/components/PieChart";
+import SportIcon from "@/app/components/SportIcon";
 
 export default function AnalysePage() {
   // -------------------------------------------------------

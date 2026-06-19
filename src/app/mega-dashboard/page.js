@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabaseClient";
-import BarChart from "../components/BarChart";
-import PieChart from "../components/PieChart";
+import BarChart from "@/app/components/BarChart";
+import PieChart from "@/app/components/PieChart";
 
 // -------------------------------------------------------
 // HELPER: Kalenderwoche berechnen
