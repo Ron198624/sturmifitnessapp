@@ -2,24 +2,17 @@
 
 import { FaRunning, FaBiking, FaSwimmer } from "react-icons/fa";
 import {
-  GiDumbbell,
   GiBiceps,
   GiLeg,
   GiChestArmor,
   GiBackPain,
-  GiShoulderArmor,
-  GiMuscleUp
+  GiMuscleUp,
+  GiWeightLiftingUp,   // ersetzt GiDumbbell
+  GiShoulderBag        // ersetzt GiShoulderArmor
 } from "react-icons/gi";
 
 export default function SportIcon({ type, size = 24 }) {
-  if (!type) {
-    return <GiDumbbell size={size} color="#ffffff" />;
-  }
-
-  // Normalisieren: "Rücken" → "ruecken"
-  const t = type.toLowerCase().replace("ü", "ue");
-
-  switch (t) {
+  switch (type) {
     // -------------------------
     // CARDIO
     // -------------------------
@@ -31,18 +24,26 @@ export default function SportIcon({ type, size = 24 }) {
       return <FaSwimmer size={size} color="#ff00ff" />;
 
     // -------------------------
-    // KRAFTTRAINING (aus muscleGroups)
+    // KRAFTTRAINING
     // -------------------------
+    case "kraft_allgemein":
+      return <GiWeightLiftingUp size={size} color="#ffcc00" />;
+
     case "brust":
       return <GiChestArmor size={size} color="#ff8800" />;
+
     case "ruecken":
       return <GiBackPain size={size} color="#00e1ff" />;
-    case "schultern":
-      return <GiShoulderArmor size={size} color="#ffaa00" />;
+
     case "beine":
       return <GiLeg size={size} color="#ff0066" />;
+
     case "bizeps":
       return <GiBiceps size={size} color="#00ff44" />;
+
+    case "schultern":
+      return <GiShoulderBag size={size} color="#ffaa00" />;
+
     case "ganzkoerper":
       return <GiMuscleUp size={size} color="#ffffff" />;
 
@@ -50,6 +51,6 @@ export default function SportIcon({ type, size = 24 }) {
     // FALLBACK
     // -------------------------
     default:
-      return <GiDumbbell size={size} color="#ffffff" />;
+      return <GiWeightLiftingUp size={size} color="#ffffff" />;
   }
 }
