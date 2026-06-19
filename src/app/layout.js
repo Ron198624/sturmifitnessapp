@@ -4,6 +4,19 @@ import "./globals.css";
 import Navbar from "./components/Navbar";
 import Image from "next/image";
 
+import Navbar from "./components/Navbar";
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <Navbar />
+        {children}
+      </body>
+    </html>
+  );
+}
+
 export const metadata = {
   title: "SturmiFitness",
   description: "Neon Cyber Gym App",
