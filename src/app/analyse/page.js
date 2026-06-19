@@ -3,6 +3,21 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabaseClient";
 import { BarChart, PieChart } from "@/app/components/ChartComponent";
+import SportIcon from "@/app/components/SportIcon";
+
+// --- MUSKELGRUPPEN ---
+const muscleGroups = {
+  "Rudermaschine": "Rücken",
+  "Brustpresse": "Brust",
+  "Butterfly": "Brust",
+  "Reverse Butterfly": "Schultern",
+  "Latzug": "Rücken",
+  "Beinpresse": "Beine",
+  "Bizepscurl": "Bizeps",
+  "Schwimmen": "Ganzkörper",
+  "Laufen": "Beine",
+  "Radfahren": "Beine",
+};
 
 export default function AnalysePage() {
   const [entries, setEntries] = useState([]);
@@ -58,17 +73,7 @@ export default function AnalysePage() {
     return Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
   }
 
-  // --- MUSKELGRUPPEN ---
-  const muscleGroups = {
-    "Rudermaschine": "Rücken",
-    "Brustpresse": "Brust",
-    "Butterfly": "Brust",
-    "Reverse Butterfly": "Schultern",
-    "Latzug": "Rücken",
-    "Beinpresse": "Beine",
-    "Bizepscurl": "Bizeps",
-  };
-
+  // --- MUSKELVOLUMEN ---
   const [muscleVolume, setMuscleVolume] = useState({});
 
   useEffect(() => {
@@ -130,6 +135,7 @@ export default function AnalysePage() {
         </p>
       </div>
 
+      {/* --- WOCHENVOLUMEN --- */}
       <div className="card">
         <h2>Wochenvolumen</h2>
         <BarChart
@@ -138,6 +144,66 @@ export default function AnalysePage() {
         />
       </div>
 
+      {/* --- HEATMAP PRO WOCHE --- */}
+      <div className="card">
+        <h2>Heatmap pro Woche</h2>
+
+        {Object.keys(weeklyVolume).map((week) => {
+          // Muskelvolumen für diese Woche berechnen
+          const weekMuscles = {};
+
+          entries
+            .filter((e) => getWeekNumber(new Date(e.datum)) == week)
+            .forEach((e) => {
+              const mg = muscleGroups[e.uebung] || "Sonstiges";
+              if (!weekMuscles[mg]) weekMuscles[mg] = 0;
+              weekMuscles[mg] += e.volumen;
+            });
+
+          const max = Math.max(...Object.values(weekMuscles));
+
+          return (
+            <div key={week} style={{ marginBottom: "25px" }}>
+              <h3 style={{ marginBottom: "10px" }}>Woche {week}</h3>
+
+              <ul style={{ listStyle: "none", padding: 0 }}>
+                {Object.entries(weekMuscles).map(([muscle, volume]) => {
+                  const intensity = volume / max;
+                  const color = `hsl(${(1 - intensity) * 240}, 100%, 50%)`;
+
+                  return (
+                    <li
+                      key={muscle}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "12px",
+                        marginBottom: "10px",
+                        padding: "10px",
+                        borderRadius: "8px",
+                        background: `linear-gradient(90deg, ${color}55, transparent)`,
+                        boxShadow: `0 0 12px ${color}55`,
+                      }}
+                    >
+                      <SportIcon type={muscle} size={26} />
+
+                      <span>
+                        <strong style={{ color: color, textShadow: `0 0 8px ${color}` }}>
+                          {muscle}
+                        </strong>
+                        <br />
+                        {volume} kg Volumen
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* --- MUSKELGRUPPEN PIECHART --- */}
       <div className="card">
         <h2>Muskelgruppen</h2>
         <PieChart
@@ -146,35 +212,96 @@ export default function AnalysePage() {
         />
       </div>
 
+      {/* --- MUSKELGRUPPEN ÜBERSICHT MIT ICONS --- */}
       <div className="card">
-        <h2>Top Übungen</h2>
-        <ul>
-          {Object.entries(topExercises).map(([uebung, vol]) => (
-            <li key={uebung}>
-              <strong style={{ color: "var(--neon)", textShadow: "var(--neon-glow)" }}>
-                {uebung}
-              </strong>
-              <br />
-              {vol} kg Gesamtvolumen
+        <h2>Muskelgruppen Übersicht</h2>
+
+        <ul style={{ listStyle: "none", padding: 0 }}>
+          {Object.entries(muscleVolume).map(([muscle, volume]) => (
+            <li
+              key={muscle}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                marginBottom: "10px",
+              }}
+            >
+              <SportIcon type={muscle} size={24} />
+
+              <span>
+                <strong>{muscle}</strong>: {volume} kg Gesamtvolumen
+              </span>
             </li>
           ))}
         </ul>
       </div>
 
+      {/* --- TOP ÜBUNGEN MIT ICONS --- */}
+      <div className="card">
+        <h2>Top Übungen</h2>
+
+        <ul style={{ listStyle: "none", padding: 0 }}>
+          {Object.entries(topExercises).map(([uebung, vol]) => {
+            const mg = muscleGroups[uebung] || "Sonstiges";
+
+            return (
+              <li
+                key={uebung}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  marginBottom: "12px",
+                }}
+              >
+                <SportIcon type={mg} size={24} />
+
+                <span>
+                  <strong style={{ color: "var(--neon)", textShadow: "var(--neon-glow)" }}>
+                    {uebung}
+                  </strong>
+                  <br />
+                  {vol} kg Gesamtvolumen
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      {/* --- PRs MIT ICONS --- */}
       <div className="card">
         <h2>Persönliche Rekorde</h2>
-        <ul>
-          {Object.entries(prs).map(([uebung, pr]) => (
-            <li key={uebung}>
-              <strong style={{ color: "var(--neon)", textShadow: "var(--neon-glow)" }}>
-                {uebung}
-              </strong>
-              <br />
-              Max Gewicht: {pr.maxGewicht} kg<br />
-              Max Wdh: {pr.maxWdh}<br />
-              Max Volumen: {pr.maxVol}
-            </li>
-          ))}
+
+        <ul style={{ listStyle: "none", padding: 0 }}>
+          {Object.entries(prs).map(([uebung, pr]) => {
+            const mg = muscleGroups[uebung] || "Sonstiges";
+
+            return (
+              <li
+                key={uebung}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  marginBottom: "12px",
+                }}
+              >
+                <SportIcon type={mg} size={24} />
+
+                <span>
+                  <strong style={{ color: "var(--neon)", textShadow: "var(--neon-glow)" }}>
+                    {uebung}
+                  </strong>
+                  <br />
+                  Max Gewicht: {pr.maxGewicht} kg<br />
+                  Max Wdh: {pr.maxWdh}<br />
+                  Max Volumen: {pr.maxVol}
+                </span>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>

@@ -2,7 +2,19 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabaseClient";
-import { BarChart, PieChart } from "@/app/components/ChartComponent";
+import { BarChart } from "@/app/components/ChartComponent";
+import SportIcon from "@/app/components/SportIcon";
+
+// --- MUSKELGRUPPEN ---
+const muscleGroups = {
+  "Rudermaschine": "Rücken",
+  "Brustpresse": "Brust",
+  "Butterfly": "Brust",
+  "Reverse Butterfly": "Schultern",
+  "Latzug": "Rücken",
+  "Beinpresse": "Beine",
+  "Bizepscurl": "Bizeps",
+};
 
 export default function VerlaufPage() {
   const [entries, setEntries] = useState([]);
@@ -71,6 +83,32 @@ export default function VerlaufPage() {
           labels={Object.keys(weeklyVolume)}
           values={Object.values(weeklyVolume)}
         />
+      </div>
+
+      {/* --- LISTE MIT ICONS --- */}
+      <div className="card">
+        <h2>Letzte Einträge</h2>
+
+        <ul style={{ listStyle: "none", padding: 0 }}>
+          {entries.slice(-15).map((entry, i) => (
+            <li
+              key={i}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                marginBottom: "10px",
+              }}
+            >
+              <SportIcon type={muscleGroups[entry.uebung]} size={22} />
+
+              <span>
+                <strong>{entry.uebung}</strong> – {entry.gewicht} kg –{" "}
+                {entry.wiederholungen} Wdh – {entry.saetze} Sätze
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
