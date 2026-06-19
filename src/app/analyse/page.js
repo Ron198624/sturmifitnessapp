@@ -2,69 +2,27 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabaseClient";
-import { BarChart, PieChart } from "@/app/components/ChartComponent";
-import SportIcon from "@/app/components/SportIcon";
-
-// --- MUSKELGRUPPEN ---
-const muscleGroups = {
-  "Rudermaschine": "Rücken",
-  "Brustpresse": "Brust",
-  "Butterfly": "Brust",
-  "Reverse Butterfly": "Schultern",
-  "Latzug": "Rücken",
-  "Beinpresse": "Beine",
-  "Bizepscurl": "Bizeps",
-  "Schwimmen": "Ganzkörper",
-  "Laufen": "Beine",
-  "Radfahren": "Beine",
-};
+import BarChart from "../components/BarChart";
+import PieChart from "../components/PieChart";
+import SportIcon from "../components/SportIcon";
 
 export default function AnalysePage() {
+  // -------------------------------------------------------
+  // STATES
+  // -------------------------------------------------------
   const [entries, setEntries] = useState([]);
+  const [cardioEntries, setCardioEntries] = useState([]);
 
-  // --- DATEN LADEN ---
-  useEffect(() => {
-    async function load() {
-      const { data, error } = await supabase
-        .from("training_entries")
-        .select("*")
-        .order("Datum", { ascending: true });
-
-      if (error) {
-        console.error("Analyse Load Fehler:", error);
-        return;
-      }
-
-      const mapped = data.map((row) => ({
-        datum: row.Datum,
-        uebung: row.Uebung,
-        gewicht: row.Gewicht,
-        wiederholungen: row.Wiederholungen,
-        saetze: row.Saetze,
-        volumen: row.Volumen,
-      }));
-
-      setEntries(mapped);
-    }
-
-    load();
-  }, []);
-
-  // --- WOCHENVOLUMEN ---
   const [weeklyVolume, setWeeklyVolume] = useState({});
+  const [muscleGroups, setMuscleGroups] = useState({});
+  const [topExercises, setTopExercises] = useState({});
+  const [prs, setPrs] = useState({});
 
-  useEffect(() => {
-    const weeks = {};
+  const [cardioWeekly, setCardioWeekly] = useState({});
 
-    entries.forEach((e) => {
-      const w = getWeekNumber(new Date(e.datum));
-      if (!weeks[w]) weeks[w] = 0;
-      weeks[w] += e.volumen;
-    });
-
-    setWeeklyVolume(weeks);
-  }, [entries]);
-
+  // -------------------------------------------------------
+  // HELPER: Kalenderwoche berechnen
+  // -------------------------------------------------------
   function getWeekNumber(date) {
     const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
     const dayNum = d.getUTCDay() || 7;
@@ -73,236 +31,230 @@ export default function AnalysePage() {
     return Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
   }
 
-  // --- MUSKELVOLUMEN ---
-  const [muscleVolume, setMuscleVolume] = useState({});
-
+  // -------------------------------------------------------
+  // LOAD: Krafttraining
+  // -------------------------------------------------------
   useEffect(() => {
-    const mv = {};
+    async function loadTraining() {
+      const { data, error } = await supabase
+        .from("training_entries")
+        .select("*")
+        .order("Datum", { ascending: true });
+
+      if (error) {
+        console.error("Training Load Fehler:", error);
+        return;
+      }
+
+      setEntries(data);
+    }
+
+    loadTraining();
+  }, []);
+
+  // -------------------------------------------------------
+  // LOAD: Cardio
+  // -------------------------------------------------------
+  useEffect(() => {
+    async function loadCardio() {
+      const { data, error } = await supabase
+        .from("cardio_entries")
+        .select("*")
+        .order("date", { ascending: true });
+
+      if (error) {
+        console.error("Cardio Load Fehler:", error);
+        return;
+      }
+
+      setCardioEntries(data);
+    }
+
+    loadCardio();
+  }, []);
+
+  // -------------------------------------------------------
+  // ANALYSE: Krafttraining
+  // -------------------------------------------------------
+  useEffect(() => {
+    const weeks = {};
+    const groups = {};
+    const exercises = {};
+    const prData = {};
 
     entries.forEach((e) => {
-      const mg = muscleGroups[e.uebung] || "Sonstiges";
-      if (!mv[mg]) mv[mg] = 0;
-      mv[mg] += e.volumen;
-    });
+      const week = getWeekNumber(new Date(e.Datum));
 
-    setMuscleVolume(mv);
-  }, [entries]);
+      // Wochenvolumen
+      if (!weeks[week]) weeks[week] = 0;
+      weeks[week] += e.Volumen;
 
-  // --- TOP ÜBUNGEN ---
-  const [topExercises, setTopExercises] = useState({});
+      // Muskelgruppen
+      if (!groups[e.Muskelgruppe]) groups[e.Muskelgruppe] = 0;
+      groups[e.Muskelgruppe] += e.Volumen;
 
-  useEffect(() => {
-    const totals = {};
+      // Top Übungen
+      if (!exercises[e.Uebung]) exercises[e.Uebung] = 0;
+      exercises[e.Uebung] += e.Volumen;
 
-    entries.forEach((e) => {
-      if (!totals[e.uebung]) totals[e.uebung] = 0;
-      totals[e.uebung] += e.volumen;
-    });
-
-    setTopExercises(totals);
-  }, [entries]);
-
-  // --- PRs ---
-  const [prs, setPRs] = useState({});
-
-  useEffect(() => {
-    const pr = {};
-
-    entries.forEach((e) => {
-      if (!pr[e.uebung]) {
-        pr[e.uebung] = {
-          maxGewicht: e.gewicht,
-          maxWdh: e.wiederholungen,
-          maxVol: e.volumen,
+      // PRs
+      if (!prData[e.Uebung]) {
+        prData[e.Uebung] = {
+          maxGewicht: e.Gewicht,
+          maxWdh: e.Wiederholungen,
+          maxVolumen: e.Volumen,
         };
       } else {
-        pr[e.uebung].maxGewicht = Math.max(pr[e.uebung].maxGewicht, e.gewicht);
-        pr[e.uebung].maxWdh = Math.max(pr[e.uebung].maxWdh, e.wiederholungen);
-        pr[e.uebung].maxVol = Math.max(pr[e.uebung].maxVol, e.volumen);
+        prData[e.Uebung].maxGewicht = Math.max(prData[e.Uebung].maxGewicht, e.Gewicht);
+        prData[e.Uebung].maxWdh = Math.max(prData[e.Uebung].maxWdh, e.Wiederholungen);
+        prData[e.Uebung].maxVolumen = Math.max(prData[e.Uebung].maxVolumen, e.Volumen);
       }
     });
 
-    setPRs(pr);
+    setWeeklyVolume(weeks);
+    setMuscleGroups(groups);
+    setTopExercises(exercises);
+    setPrs(prData);
   }, [entries]);
 
-  // --- UI ---
-  return (
-    <div className="container">
-      <div className="card">
-        <h1>Analyse Dashboard</h1>
-        <p style={{ color: "var(--text-dim)", marginBottom: "20px" }}>
-          Deine komplette Trainingsanalyse im Neon‑Cyber‑Gym‑Style.
-        </p>
-      </div>
+  // -------------------------------------------------------
+  // ANALYSE: Cardio
+  // -------------------------------------------------------
+  useEffect(() => {
+    const weeks = {};
 
-      {/* --- WOCHENVOLUMEN --- */}
+    cardioEntries.forEach((e) => {
+      const week = getWeekNumber(new Date(e.date));
+
+      if (!weeks[week]) {
+        weeks[week] = { laufen: 0, radfahren: 0, schwimmen: 0 };
+      }
+
+      if (e.exercise_type === "laufen") weeks[week].laufen += e.distance_m;
+      if (e.exercise_type === "radfahren") weeks[week].radfahren += e.distance_m;
+      if (e.exercise_type === "schwimmen") weeks[week].schwimmen += e.distance_m;
+    });
+
+    setCardioWeekly(weeks);
+  }, [cardioEntries]);
+
+  // -------------------------------------------------------
+  // CARDIO HEATMAP RENDERER
+  // -------------------------------------------------------
+  function renderCardioHeatmap() {
+    return Object.keys(cardioWeekly).map((week) => {
+      const w = cardioWeekly[week];
+      const max = Math.max(w.laufen, w.radfahren, w.schwimmen);
+
+      return (
+        <div key={week} className="card">
+          <h3>Cardio – Woche {week}</h3>
+
+          <ul style={{ listStyle: "none", padding: 0 }}>
+            {[
+              ["Laufen", w.laufen, "laufen"],
+              ["Radfahren", w.radfahren, "radfahren"],
+              ["Schwimmen", w.schwimmen, "schwimmen"],
+            ].map(([label, value, type]) => {
+              if (value === 0) return null;
+
+              const intensity = value / max;
+              const color = `hsl(${(1 - intensity) * 240}, 100%, 50%)`;
+
+              return (
+                <li
+                  key={type}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "12px",
+                    marginBottom: "10px",
+                    padding: "10px",
+                    borderRadius: "8px",
+                    background: `linear-gradient(90deg, ${color}55, transparent)`,
+                    boxShadow: `0 0 12px ${color}55`,
+                  }}
+                >
+                  <SportIcon type={type} size={26} />
+
+                  <span>
+                    <strong style={{ color: color, textShadow: `0 0 8px ${color}` }}>
+                      {label}
+                    </strong>
+                    <br />
+                    {value} {type === "schwimmen" ? "m" : "km"}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      );
+    });
+  }
+
+  // -------------------------------------------------------
+  // RENDER
+  // -------------------------------------------------------
+  return (
+    <div className="analyse-container">
+      <h1>Analyse Dashboard</h1>
+      <p>Deine komplette Trainingsanalyse im Neon-Cyber-Gym-Style.</p>
+
+      {/* ------------------- KRAFTTRAINING ------------------- */}
       <div className="card">
-        <h2>Wochenvolumen</h2>
+        <h2>Wochenvolumen (Kraft)</h2>
         <BarChart
           labels={Object.keys(weeklyVolume)}
           values={Object.values(weeklyVolume)}
         />
       </div>
 
-      {/* --- HEATMAP PRO WOCHE --- */}
-      <div className="card">
-        <h2>Heatmap pro Woche</h2>
-
-        {Object.keys(weeklyVolume).map((week) => {
-          // Muskelvolumen für diese Woche berechnen
-          const weekMuscles = {};
-
-          entries
-            .filter((e) => getWeekNumber(new Date(e.datum)) == week)
-            .forEach((e) => {
-              const mg = muscleGroups[e.uebung] || "Sonstiges";
-              if (!weekMuscles[mg]) weekMuscles[mg] = 0;
-              weekMuscles[mg] += e.volumen;
-            });
-
-          const max = Math.max(...Object.values(weekMuscles));
-
-          return (
-            <div key={week} style={{ marginBottom: "25px" }}>
-              <h3 style={{ marginBottom: "10px" }}>Woche {week}</h3>
-
-              <ul style={{ listStyle: "none", padding: 0 }}>
-                {Object.entries(weekMuscles).map(([muscle, volume]) => {
-                  const intensity = volume / max;
-                  const color = `hsl(${(1 - intensity) * 240}, 100%, 50%)`;
-
-                  return (
-                    <li
-                      key={muscle}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "12px",
-                        marginBottom: "10px",
-                        padding: "10px",
-                        borderRadius: "8px",
-                        background: `linear-gradient(90deg, ${color}55, transparent)`,
-                        boxShadow: `0 0 12px ${color}55`,
-                      }}
-                    >
-                      <SportIcon type={muscle} size={26} />
-
-                      <span>
-                        <strong style={{ color: color, textShadow: `0 0 8px ${color}` }}>
-                          {muscle}
-                        </strong>
-                        <br />
-                        {volume} kg Volumen
-                      </span>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* --- MUSKELGRUPPEN PIECHART --- */}
-      <div className="card">
-        <h2>Muskelgruppen</h2>
-        <PieChart
-          labels={Object.keys(muscleVolume)}
-          values={Object.values(muscleVolume)}
-        />
-      </div>
-
-      {/* --- MUSKELGRUPPEN ÜBERSICHT MIT ICONS --- */}
       <div className="card">
         <h2>Muskelgruppen Übersicht</h2>
+        <PieChart data={muscleGroups} />
+      </div>
 
-        <ul style={{ listStyle: "none", padding: 0 }}>
-          {Object.entries(muscleVolume).map(([muscle, volume]) => (
-            <li
-              key={muscle}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                marginBottom: "10px",
-              }}
-            >
-              <SportIcon type={muscle} size={24} />
-
-              <span>
-                <strong>{muscle}</strong>: {volume} kg Gesamtvolumen
-              </span>
+      <div className="card">
+        <h2>Top Übungen</h2>
+        <ul>
+          {Object.entries(topExercises).map(([name, vol]) => (
+            <li key={name}>
+              {name}: {vol} kg Gesamtvolumen
             </li>
           ))}
         </ul>
       </div>
 
-      {/* --- TOP ÜBUNGEN MIT ICONS --- */}
-      <div className="card">
-        <h2>Top Übungen</h2>
-
-        <ul style={{ listStyle: "none", padding: 0 }}>
-          {Object.entries(topExercises).map(([uebung, vol]) => {
-            const mg = muscleGroups[uebung] || "Sonstiges";
-
-            return (
-              <li
-                key={uebung}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  marginBottom: "12px",
-                }}
-              >
-                <SportIcon type={mg} size={24} />
-
-                <span>
-                  <strong style={{ color: "var(--neon)", textShadow: "var(--neon-glow)" }}>
-                    {uebung}
-                  </strong>
-                  <br />
-                  {vol} kg Gesamtvolumen
-                </span>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-
-      {/* --- PRs MIT ICONS --- */}
       <div className="card">
         <h2>Persönliche Rekorde</h2>
+        {Object.entries(prs).map(([name, pr]) => (
+          <div key={name} style={{ marginBottom: "15px" }}>
+            <strong>{name}</strong>
+            <br />
+            Max Gewicht: {pr.maxGewicht} kg
+            <br />
+            Max Wdh: {pr.maxWdh}
+            <br />
+            Max Volumen: {pr.maxVolumen}
+          </div>
+        ))}
+      </div>
 
-        <ul style={{ listStyle: "none", padding: 0 }}>
-          {Object.entries(prs).map(([uebung, pr]) => {
-            const mg = muscleGroups[uebung] || "Sonstiges";
+      {/* ------------------- CARDIO ------------------- */}
+      <div className="card">
+        <h2>Cardio – Wochenvolumen</h2>
+        <BarChart
+          labels={Object.keys(cardioWeekly)}
+          values={Object.values(cardioWeekly).map(
+            (w) => w.laufen + w.radfahren + w.schwimmen
+          )}
+        />
+      </div>
 
-            return (
-              <li
-                key={uebung}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  marginBottom: "12px",
-                }}
-              >
-                <SportIcon type={mg} size={24} />
-
-                <span>
-                  <strong style={{ color: "var(--neon)", textShadow: "var(--neon-glow)" }}>
-                    {uebung}
-                  </strong>
-                  <br />
-                  Max Gewicht: {pr.maxGewicht} kg<br />
-                  Max Wdh: {pr.maxWdh}<br />
-                  Max Volumen: {pr.maxVol}
-                </span>
-              </li>
-            );
-          })}
-        </ul>
+      <div className="card">
+        <h2>Cardio – Heatmap pro Woche</h2>
+        {renderCardioHeatmap()}
       </div>
     </div>
   );
