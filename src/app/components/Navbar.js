@@ -21,8 +21,11 @@ export default function Navbar() {
     window.location.reload();
   }
 
+  // Basis-Button-Stil
   const base =
-    "px-4 py-2 rounded-lg border border-gray-700 bg-gray-900 text-neon-green transition shadow-[0_0_8px_rgba(0,255,0,0.3)] hover:shadow-[0_0_12px_rgba(168,85,247,0.8)] hover:border-purple-500 hover:text-purple-400";
+    "px-4 py-2 rounded-lg border border-gray-700 bg-gray-900 text-neon-green " +
+    "transition shadow-[0_0_8px_rgba(0,255,0,0.3)] " +
+    "hover:shadow-[0_0_12px_rgba(168,85,247,0.8)] hover:border-purple-500 hover:text-purple-400";
 
   return (
     <nav className="w-full flex flex-wrap justify-center gap-3 mt-2">
@@ -33,16 +36,14 @@ export default function Navbar() {
       <Link href="/analyse" className={base}>Analyse</Link>
       <Link href="/verlauf" className={base}>Verlauf</Link>
 
-      {user && (
+      {user ? (
         <button
           onClick={logout}
           className="px-4 py-2 rounded-lg border border-red-700 bg-gray-900 text-red-400 transition shadow-[0_0_8px_rgba(255,0,0,0.3)] hover:shadow-[0_0_12px_rgba(255,0,0,0.8)] hover:border-red-500"
         >
           Logout
         </button>
-      )}
-
-      {!user && (
+      ) : (
         <>
           <Link href="/login" className={base}>Login</Link>
           <Link href="/signup" className={base}>Signup</Link>
