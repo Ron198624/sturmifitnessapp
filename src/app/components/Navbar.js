@@ -21,14 +21,14 @@ export default function Navbar() {
     window.location.reload();
   }
 
-  // Basis-Button-Stil
+  // FETTE, GROSSE BUTTONS
   const base =
-    "px-4 py-2 rounded-lg border border-gray-700 bg-gray-900 text-neon-green " +
-    "transition shadow-[0_0_8px_rgba(0,255,0,0.3)] " +
-    "hover:shadow-[0_0_12px_rgba(168,85,247,0.8)] hover:border-purple-500 hover:text-purple-400";
+    "px-8 py-4 text-xl font-bold rounded-2xl border border-gray-700 bg-gray-900 text-neon-green " +
+    "transition shadow-[0_0_16px_rgba(0,255,0,0.5)] " +
+    "hover:shadow-[0_0_28px_rgba(168,85,247,1)] hover:border-purple-500 hover:text-purple-400";
 
   return (
-    <nav className="w-full flex flex-wrap justify-center gap-3 mt-2">
+    <nav className="w-full flex flex-wrap justify-center gap-4 mt-4">
 
       <Link href="/" className={base}>Home</Link>
       <Link href="/training" className={base}>Training</Link>
@@ -39,7 +39,7 @@ export default function Navbar() {
       {user ? (
         <button
           onClick={logout}
-          className="px-4 py-2 rounded-lg border border-red-700 bg-gray-900 text-red-400 transition shadow-[0_0_8px_rgba(255,0,0,0.3)] hover:shadow-[0_0_12px_rgba(255,0,0,0.8)] hover:border-red-500"
+          className="px-8 py-4 text-xl font-bold rounded-2xl border border-red-700 bg-gray-900 text-red-400 transition shadow-[0_0_16px_rgba(255,0,0,0.5)] hover:shadow-[0_0_28px_rgba(255,0,0,1)] hover:border-red-500"
         >
           Logout
         </button>
