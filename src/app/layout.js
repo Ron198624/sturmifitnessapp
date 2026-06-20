@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
       <body className="bg-black text-white min-h-screen flex flex-col relative">
 
         {/* MATRIX CODE REGEN – EIGENE EBENE */}
-        <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
+        <div className="matrix-bg">
           {Array.from({ length: 40 }).map((_, i) => (
             <div
               key={i}
