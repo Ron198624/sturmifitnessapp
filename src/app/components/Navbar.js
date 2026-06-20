@@ -21,11 +21,11 @@ export default function Navbar() {
     window.location.reload();
   }
 
-  // FETTE, BREITE, LUFTIGE BUTTON-KACHELN
+  // FETTE, BREITE, LUFTIGE KACHELN
   const base =
-    "px-10 py-5 text-2xl font-bold rounded-3xl border border-gray-700 bg-gray-900 text-neon-green " +
-    "transition shadow-[0_0_20px_rgba(0,255,0,0.5)] " +
-    "hover:shadow-[0_0_32px_rgba(168,85,247,1)] hover:border-purple-500 hover:text-purple-400";
+    "min-w-[180px] px-8 py-5 text-xl font-bold rounded-2xl border border-gray-700 bg-gray-900 text-neon-green " +
+    "transition shadow-[0_0_16px_rgba(0,255,0,0.5)] " +
+    "hover:shadow-[0_0_28px_rgba(168,85,247,1)] hover:border-purple-500 hover:text-purple-400";
 
   return (
     <nav className="w-full flex flex-wrap justify-center gap-6 mt-6">
@@ -39,7 +39,7 @@ export default function Navbar() {
       {user ? (
         <button
           onClick={logout}
-          className="px-10 py-5 text-2xl font-bold rounded-3xl border border-red-700 bg-gray-900 text-red-400 transition shadow-[0_0_20px_rgba(255,0,0,0.5)] hover:shadow-[0_0_32px_rgba(255,0,0,1)] hover:border-red-500"
+          className="min-w-[180px] px-8 py-5 text-xl font-bold rounded-2xl border border-red-700 bg-gray-900 text-red-400 transition shadow-[0_0_16px_rgba(255,0,0,0.5)] hover:shadow-[0_0_28px_rgba(255,0,0,1)] hover:border-red-500"
         >
           Logout
         </button>
@@ -52,4 +52,3 @@ export default function Navbar() {
 
     </nav>
   );
-}
