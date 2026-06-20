@@ -21,6 +21,7 @@ const muscleGroups = {
 
 export default function VerlaufPage() {
   const [entries, setEntries] = useState([]);
+  const [weeklyVolume, setWeeklyVolume] = useState({});
 
   useEffect(() => {
     async function load() {
@@ -49,8 +50,6 @@ export default function VerlaufPage() {
     load();
   }, []);
 
-  const [weeklyVolume, setWeeklyVolume] = useState({});
-
   useEffect(() => {
     const weeks = {};
 
@@ -72,43 +71,42 @@ export default function VerlaufPage() {
   }
 
   return (
-    <div className="container">
-      <div className="card">
-        <h1>Trainingsverlauf</h1>
-        <p style={{ color: "var(--text-dim)", marginBottom: "20px" }}>
-          Dein Trainingsvolumen über die Wochen.
-        </p>
-      </div>
+    <div className="p-6 text-white mt-6 pb-24">
+      <h1 className="text-3xl font-bold mb-4 text-center">Trainingsverlauf</h1>
+      <p className="text-neon-green text-center mb-8">
+        Dein Trainingsvolumen über die Wochen.
+      </p>
 
-      <div className="card">
-        <h2>Wochenvolumen</h2>
+      {/* Wochenvolumen */}
+      <div className="mb-10">
+        <h2 className="text-xl mb-2 text-purple-400 text-center">Wochenvolumen</h2>
         <BarChart
           labels={Object.keys(weeklyVolume)}
           values={Object.values(weeklyVolume)}
         />
       </div>
 
-      {/* --- LISTE MIT ICONS --- */}
-      <div className="card">
-        <h2>Letzte Einträge</h2>
+      {/* Letzte Einträge */}
+      <div className="mb-10">
+        <h2 className="text-xl mb-4 text-purple-400 text-center">Letzte Einträge</h2>
 
-        <ul style={{ listStyle: "none", padding: 0 }}>
+        <ul className="space-y-4">
           {entries.slice(-15).map((entry, i) => (
             <li
               key={i}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                marginBottom: "10px",
-              }}
+              className="flex items-center gap-4 bg-gray-900 p-3 rounded-lg"
             >
-              <SportIcon type={muscleGroups[entry.uebung]} size={22} />
+              <SportIcon type={muscleGroups[entry.uebung]} size={26} />
 
-              <span>
-                <strong>{entry.uebung}</strong> – {entry.gewicht} kg –{" "}
-                {entry.wiederholungen} Wdh – {entry.saetze} Sätze
-              </span>
+              <div className="text-sm">
+                <strong className="text-purple-300">{entry.uebung}</strong>
+                <div className="text-neon-green">
+                  {entry.gewicht} kg – {entry.wiederholungen} Wdh – {entry.saetze} Sätze
+                </div>
+                <div className="text-gray-400 text-xs">
+                  {new Date(entry.datum).toLocaleDateString("de-DE")}
+                </div>
+              </div>
             </li>
           ))}
         </ul>

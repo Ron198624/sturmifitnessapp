@@ -1,104 +1,119 @@
 "use client";
 
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/utils/supabaseClient";
 
-export const dynamic = "force-dynamic";
-
-console.log("ENV URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
-console.log("ENV KEY:", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? "OK" : "MISSING");
-
 export default function TrainingPage() {
- 
+  const [uebung, setUebung] = useState("");
+  const [gewicht, setGewicht] = useState("");
+  const [wiederholungen, setWiederholungen] = useState("");
+  const [saetze, setSaetze] = useState("");
+  const [message, setMessage] = useState("");
 
-  const [exercise, setExercise] = useState("");
-  const [weight, setWeight] = useState("");
-  const [reps, setReps] = useState("");
-  const [sets, setSets] = useState("");
-  const [loading, setLoading] = useState(false);
+  async function handleSubmit(e) {
+    e.preventDefault();
 
-  const handleAdd = async () => {
-    if (!exercise || !weight || !reps || !sets) return;
+    const volumen = Number(gewicht) * Number(wiederholungen) * Number(saetze);
 
-    setLoading(true);
-
-    const volume = Number(weight) * Number(reps) * Number(sets);
-
-    const payload = {
-      Datum: new Date().toISOString().split("T")[0],
-      Uebung: exercise,
-      Gewicht: Number(weight),
-      Wiederholungen: Number(reps),
-      Saetze: Number(sets),
-      Volumen: volume,
-    };
-
-    console.log("Insert payload:", payload);
-
-    const { data, error } = await supabase
-      .from("training_entries")
-      .insert([payload]);
-
-    console.log("Insert result:", { data, error });
-
-    setLoading(false);
+    const { error } = await supabase.from("training_entries").insert([
+      {
+        Uebung: uebung,
+        Gewicht: gewicht,
+        Wiederholungen: wiederholungen,
+        Saetze: saetze,
+        Volumen: volumen,
+        Datum: new Date().toISOString(),
+      },
+    ]);
 
     if (error) {
-      console.error("Fehler beim Speichern:", error);
+      setMessage("Fehler beim Speichern");
       return;
     }
 
-    setExercise("");
-    setWeight("");
-    setReps("");
-    setSets("");
-  };
+    setMessage("Eintrag gespeichert!");
+    setUebung("");
+    setGewicht("");
+    setWiederholungen("");
+    setSaetze("");
+  }
 
   return (
-    <div className="training-container">
-      <h1>Training erfassen</h1>
+    <div className="p-6 text-white mt-6 pb-24">
+      <h1 className="text-3xl font-bold mb-6 text-center">Training</h1>
 
-      <div className="training-form">
-        <select
-          value={exercise}
-          onChange={(e) => setExercise(e.target.value)}
+      {message && (
+        <div className="text-center mb-4 text-purple-400">{message}</div>
+      )}
+
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4 bg-gray-900 p-4 rounded-lg"
+      >
+        {/* Übung */}
+        <div className="flex flex-col">
+          <label className="mb-1 text-neon-green">Übung</label>
+          <select
+            value={uebung}
+            onChange={(e) => setUebung(e.target.value)}
+            className="p-2 rounded bg-black border border-gray-700"
+            required
+          >
+            <option value="">Bitte wählen…</option>
+            <option value="Rudermaschine">Rudermaschine</option>
+            <option value="Brustpresse">Brustpresse</option>
+            <option value="Butterfly">Butterfly</option>
+            <option value="Reverse Butterfly">Reverse Butterfly</option>
+            <option value="Latzug">Latzug</option>
+            <option value="Beinpresse">Beinpresse</option>
+            <option value="Bizepscurl">Bizepscurl</option>
+          </select>
+        </div>
+
+        {/* Gewicht */}
+        <div className="flex flex-col">
+          <label className="mb-1 text-neon-green">Gewicht (kg)</label>
+          <input
+            type="number"
+            value={gewicht}
+            onChange={(e) => setGewicht(e.target.value)}
+            className="p-2 rounded bg-black border border-gray-700"
+            required
+          />
+        </div>
+
+        {/* Wiederholungen */}
+        <div className="flex flex-col">
+          <label className="mb-1 text-neon-green">Wiederholungen</label>
+          <input
+            type="number"
+            value={wiederholungen}
+            onChange={(e) => setWiederholungen(e.target.value)}
+            className="p-2 rounded bg-black border border-gray-700"
+            required
+          />
+        </div>
+
+        {/* Sätze */}
+        <div className="flex flex-col">
+          <label className="mb-1 text-neon-green">Sätze</label>
+          <input
+            type="number"
+            value={saetze}
+            onChange={(e) => setSaetze(e.target.value)}
+            className="p-2 rounded bg-black border border-gray-700"
+            required
+          />
+        </div>
+
+        {/* Speichern */}
+        <button
+          type="submit"
+          className="mt-2 bg-purple-600 hover:bg-purple-700 py-2 rounded font-semibold"
         >
-          <option value="">Übung wählen</option>
-          <option value="Rudermaschine">Rudermaschine</option>
-          <option value="Brustpresse">Brustpresse</option>
-          <option value="Butterfly">Butterfly</option>
-          <option value="Reverse Butterfly">Reverse Butterfly</option>
-          <option value="Latzug">Latzug</option>
-          <option value="Beinpresse">Beinpresse</option>
-          <option value="Bizepscurl">Bizepscurl</option>
-        </select>
-
-        <input
-          type="number"
-          placeholder="Gewicht (kg)"
-          value={weight}
-          onChange={(e) => setWeight(e.target.value)}
-        />
-
-        <input
-          type="number"
-          placeholder="Wiederholungen"
-          value={reps}
-          onChange={(e) => setReps(e.target.value)}
-        />
-
-        <input
-          type="number"
-          placeholder="Sätze"
-          value={sets}
-          onChange={(e) => setSets(e.target.value)}
-        />
-
-        <button onClick={handleAdd} disabled={loading} className="btn">
-          {loading ? "Speichern..." : "Satz speichern"}
+          Speichern
         </button>
-      </div>
+      </form>
     </div>
   );
 }

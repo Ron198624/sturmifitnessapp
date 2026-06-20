@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabaseClient";
 import BarChart from "../components/BarChart";
 import PieChart from "../components/PieChart";
-import SportIcon from "../components/SportIcon";
 
 export default function AnalysePage() {
   const [entries, setEntries] = useState([]);
@@ -38,7 +37,7 @@ export default function AnalysePage() {
     loadCardio();
   }, []);
 
-  if (loading) return <div className="text-white">Lade Analyse…</div>;
+  if (loading) return <div className="text-white mt-10 text-center">Lade Analyse…</div>;
 
   // Muskelgruppen
   const muscleGroups = {
@@ -131,21 +130,21 @@ export default function AnalysePage() {
   const exerciseValues = Object.values(exerciseMap);
 
   return (
-    <div className="p-6 text-white">
-      <h1 className="text-3xl font-bold mb-6">Analyse</h1>
+    <div className="p-6 text-white mt-6 pb-24">
+      <h1 className="text-3xl font-bold mb-6 text-center">Analyse</h1>
 
       <div className="mb-10">
-        <h2 className="text-xl mb-2">Volumen pro Übung</h2>
+        <h2 className="text-xl mb-2 text-purple-400 text-center">Volumen pro Übung</h2>
         <BarChart labels={exerciseLabels} values={exerciseValues} />
       </div>
 
       <div className="mb-10">
-        <h2 className="text-xl mb-2">Wochenvolumen (Kraft + Cardio)</h2>
+        <h2 className="text-xl mb-2 text-purple-400 text-center">Wochenvolumen (Kraft + Cardio)</h2>
         <BarChart labels={weekLabels} values={weekValues} />
       </div>
 
       <div className="mb-10">
-        <h2 className="text-xl mb-2">Muskelgruppen Übersicht</h2>
+        <h2 className="text-xl mb-2 text-purple-400 text-center">Muskelgruppen Übersicht</h2>
         <PieChart data={muscleGroups} />
       </div>
     </div>
