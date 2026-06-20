@@ -22,7 +22,8 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="flex flex-wrap justify-center gap-4 text-lg font-semibold text-neon-green mb-4">
+    <nav className="w-full flex flex-wrap justify-center gap-6 text-lg font-semibold text-neon-green mt-2">
+
       <Link href="/" className="hover:text-purple-400">Home</Link>
       <Link href="/training" className="hover:text-purple-400">Training</Link>
       <Link href="/cardio" className="hover:text-purple-400">Cardio</Link>
@@ -32,7 +33,7 @@ export default function Navbar() {
       {user ? (
         <button
           onClick={logout}
-          className="ml-2 px-3 py-1 bg-purple-600 rounded hover:bg-purple-700"
+          className="hover:text-purple-400"
         >
           Logout
         </button>
