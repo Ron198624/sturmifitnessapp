@@ -36,10 +36,11 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 28px;
+  padding: 24px 32px;
   background: #0f0f0f;
   border-bottom: 1px solid var(--neon);
   box-shadow: var(--neon-glow);
+  font-size: 1.3rem;
 }
 
 .logo {
