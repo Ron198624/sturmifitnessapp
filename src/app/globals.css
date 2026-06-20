@@ -27,6 +27,22 @@ body {
 }
 
 /* ========================= */
+/*   BUTTON STYLES           */
+/* ========================= */
+
+.btn {
+  @apply min-w-[200px] px-8 py-5 text-xl font-bold rounded-2xl border border-gray-700 bg-gray-900 text-neon-green text-center 
+         transition shadow-[0_0_16px_rgba(0,255,0,0.5)] 
+         hover:shadow-[0_0_28px_rgba(168,85,247,1)] hover:border-purple-500 hover:text-purple-400;
+}
+
+.btn-secondary {
+  @apply min-w-[200px] px-8 py-5 text-xl font-bold rounded-2xl border border-purple-700 bg-gray-900 text-purple-300 text-center 
+         transition shadow-[0_0_16px_rgba(168,85,247,0.5)] 
+         hover:shadow-[0_0_28px_rgba(168,85,247,1)] hover:border-purple-500 hover:text-purple-400;
+}
+
+/* ========================= */
 /*   MATRIX CODE REGEN       */
 /* ========================= */
 
@@ -36,7 +52,7 @@ body {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    z-index: -10;
+    z-index: -10; /* GANZ HINTEN */
     overflow: hidden;
   }
 
