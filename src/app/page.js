@@ -2,6 +2,11 @@ export default function HomePage() {
   return (
     <div className="w-full px-4 pb-24">
 
+      {/* TESTBLOCK – zeigt ob Tailwind funktioniert */}
+      <div className="text-red-500 text-4xl mb-6">
+        TEST
+      </div>
+
       {/* Willkommen-Karte */}
       <div className="card text-center py-10 px-6 w-full">
         <h1 className="text-3xl font-bold mb-4">Willkommen bei SturmFitness</h1>
