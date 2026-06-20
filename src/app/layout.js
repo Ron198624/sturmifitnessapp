@@ -10,10 +10,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="de">
-      <body className="bg-black text-white min-h-screen flex flex-col relative overflow-hidden">
+      <body className="bg-black text-white min-h-screen flex flex-col relative">
 
-        {/* MATRIX CODE REGEN */}
-        <div className="matrix-bg">
+        {/* MATRIX CODE REGEN – EIGENE EBENE */}
+        <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
           {Array.from({ length: 40 }).map((_, i) => (
             <div
               key={i}
@@ -28,7 +28,7 @@ export default function RootLayout({ children }) {
         </div>
 
         {/* HEADER */}
-        <header className="w-full flex flex-col items-center py-4 border-b border-gray-800 relative z-10">
+        <header className="w-full flex flex-col items-center py-4 border-b border-gray-800 z-10">
           <Image
             src="/Logo.png"
             alt="SturmiFitness Logo"
@@ -40,12 +40,12 @@ export default function RootLayout({ children }) {
         </header>
 
         {/* HAUPTINHALT */}
-        <main className="flex-1 w-full px-4 relative z-10">
+        <main className="flex-1 w-full px-4 z-10">
           {children}
         </main>
 
         {/* NAVIGATION */}
-        <footer className="w-full border-t border-gray-800 relative z-10">
+        <footer className="w-full border-t border-gray-800 z-10">
           <Navbar />
         </footer>
 
