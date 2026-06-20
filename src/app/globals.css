@@ -12,12 +12,12 @@ body {
 }
 
 /* ========================= */
-/*   CUSTOM COMPONENTS       */
+/*   COMPONENTS (mit @apply) */
 /* ========================= */
 
 @layer components {
 
-  /* Neon Card */
+  /* Card */
   .card {
     @apply bg-[rgba(20,20,20,0.8)] border border-gray-700 rounded-2xl p-6 backdrop-blur-md shadow-[0_0_20px_rgba(0,255,150,0.15)];
   }
