@@ -10,8 +10,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="de">
-      <body className="bg-black text-white pb-24 relative">
-        <header className="w-full flex flex-col items-center py-4">
+      <body className="bg-black text-white min-h-screen flex flex-col">
+
+        {/* HEADER */}
+        <header className="w-full flex flex-col items-center py-4 border-b border-gray-800">
           <Image
             src="/Logo.png"
             alt="SturmiFitness Logo"
@@ -22,12 +24,16 @@ export default function RootLayout({ children }) {
           />
         </header>
 
-        <main className="w-full">
+        {/* HAUPTINHALT – volle Breite */}
+        <main className="flex-1 w-full px-4">
           {children}
         </main>
 
-        {/* Bottom Navigation */}
-        <Navbar />
+        {/* NAVIGATION */}
+        <footer className="w-full border-t border-gray-800">
+          <Navbar />
+        </footer>
+
       </body>
     </html>
   );
