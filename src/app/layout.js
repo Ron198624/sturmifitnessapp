@@ -1,3 +1,5 @@
+// src/app/layout.js
+
 import "./globals.css";
 import Image from "next/image";
 import Navbar from "./components/Navbar";
@@ -12,7 +14,7 @@ export default function RootLayout({ children }) {
     <html lang="de">
       <body className="bg-black text-white min-h-screen flex flex-col relative">
 
-        {/* MATRIX CODE REGEN – EIGENE EBENE */}
+        {/* MATRIX CODE REGEN */}
         <div className="matrix-bg">
           {Array.from({ length: 40 }).map((_, i) => (
             <div
@@ -39,7 +41,7 @@ export default function RootLayout({ children }) {
           />
         </header>
 
-        {/* HAUPTINHALT */}
+        {/* CONTENT */}
         <main className="flex-1 w-full px-4 z-10">
           {children}
         </main>
