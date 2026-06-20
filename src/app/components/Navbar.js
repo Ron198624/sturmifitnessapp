@@ -21,9 +21,9 @@ export default function Navbar() {
     window.location.reload();
   }
 
-  // FETTE, BREITE, LUFTIGE KACHELN
+  // FETTE, BREITE, ZENTRIERTE KACHELN
   const base =
-    "min-w-[180px] px-8 py-5 text-xl font-bold rounded-2xl border border-gray-700 bg-gray-900 text-neon-green " +
+    "min-w-[180px] px-8 py-5 text-xl font-bold rounded-2xl border border-gray-700 bg-gray-900 text-neon-green text-center " +
     "transition shadow-[0_0_16px_rgba(0,255,0,0.5)] " +
     "hover:shadow-[0_0_28px_rgba(168,85,247,1)] hover:border-purple-500 hover:text-purple-400";
 
@@ -39,7 +39,7 @@ export default function Navbar() {
       {user ? (
         <button
           onClick={logout}
-          className="min-w-[180px] px-8 py-5 text-xl font-bold rounded-2xl border border-red-700 bg-gray-900 text-red-400 transition shadow-[0_0_16px_rgba(255,0,0,0.5)] hover:shadow-[0_0_28px_rgba(255,0,0,1)] hover:border-red-500"
+          className="min-w-[180px] px-8 py-5 text-xl font-bold rounded-2xl border border-red-700 bg-gray-900 text-red-400 text-center transition shadow-[0_0_16px_rgba(255,0,0,0.5)] hover:shadow-[0_0_28px_rgba(255,0,0,1)] hover:border-red-500"
         >
           Logout
         </button>
