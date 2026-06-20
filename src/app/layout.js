@@ -14,17 +14,19 @@ export default function RootLayout({ children }) {
 
         {/* HEADER + NAVIGATION */}
         <header className="w-full bg-black border-b border-gray-800 py-4">
-          <div className="flex flex-col items-center">
+          <div className="w-full flex flex-col items-center justify-center">
 
-            {/* Logo */}
-            <Image
-              src="/Logo.png"
-              alt="SturmiFitness Logo"
-              width={160}
-              height={160}
-              priority
-              className="mb-3"
-            />
+            {/* Logo perfekt zentriert */}
+            <div className="w-full flex justify-center">
+              <Image
+                src="/Logo.png"
+                alt="SturmiFitness Logo"
+                width={160}
+                height={160}
+                priority
+                className="mb-3"
+              />
+            </div>
 
             {/* Navigation oben */}
             <Navbar />
@@ -38,5 +40,5 @@ export default function RootLayout({ children }) {
 
       </body>
     </html>
-  )
+  );
 }
