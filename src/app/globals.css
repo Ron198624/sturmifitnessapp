@@ -263,3 +263,81 @@ li {
   justify-content: space-between;
   box-shadow: var(--neon-glow);
 }
+
+:root {
+  --cyber-gradient: linear-gradient(
+    135deg,
+    #0f0f0f 0%,
+    #111122 20%,
+    #1a0033 40%,
+    #001133 60%,
+    #003322 80%,
+    #00ff99 100%
+  );
+}
+
+:root {
+  --cyber-gradient: linear-gradient(
+    135deg,
+    #0f0f0f,
+    #111122,
+    #1a0033,
+    #001133,
+    #003322,
+    #00ff99
+  );
+}
+
+@keyframes cyberMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.cyber-bg {
+  background: var(--cyber-gradient);
+  background-size: 400% 400%;
+  animation: cyberMove 12s ease infinite;
+}
+
+/* MATRIX CODE REGEN */
+.matrix-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  background: black;
+  overflow: hidden;
+}
+
+.matrix-line {
+  position: absolute;
+  top: -100%;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 255, 0, 0.8),
+    transparent
+  );
+  animation: matrixFall linear infinite;
+}
+
+@keyframes matrixFall {
+  0% {
+    top: -100%;
+  }
+  100% {
+    top: 100%;
+  }
+}

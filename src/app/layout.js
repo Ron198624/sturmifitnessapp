@@ -10,33 +10,44 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="de">
-      <body className="bg-black text-white min-h-screen flex flex-col">
+      <body className="bg-black text-white min-h-screen flex flex-col relative overflow-hidden">
 
-        {/* HEADER + NAVIGATION */}
-        <header className="w-full bg-black border-b border-gray-800 py-4">
-          <div className="w-full flex flex-col items-center justify-center">
+        {/* MATRIX CODE REGEN */}
+        <div className="matrix-bg">
+          {Array.from({ length: 40 }).map((_, i) => (
+            <div
+              key={i}
+              className="matrix-line"
+              style={{
+                left: `${Math.random() * 100}%`,
+                animationDuration: `${4 + Math.random() * 6}s`,
+                animationDelay: `${Math.random() * 5}s`,
+              }}
+            ></div>
+          ))}
+        </div>
 
-            {/* Logo perfekt zentriert */}
-            <div className="w-full flex justify-center">
-              <Image
-                src="/Logo.png"
-                alt="SturmiFitness Logo"
-                width={160}
-                height={160}
-                priority
-                className="mb-3"
-              />
-            </div>
-
-            {/* Navigation oben */}
-            <Navbar />
-          </div>
+        {/* HEADER */}
+        <header className="w-full flex flex-col items-center py-4 border-b border-gray-800 relative z-10">
+          <Image
+            src="/Logo.png"
+            alt="SturmiFitness Logo"
+            width={160}
+            height={160}
+            priority
+            className="mb-3"
+          />
         </header>
 
-        {/* HAUPTINHALT – volle Breite */}
-        <main className="flex-1 w-full px-4 py-4">
+        {/* HAUPTINHALT */}
+        <main className="flex-1 w-full px-4 relative z-10">
           {children}
         </main>
+
+        {/* NAVIGATION */}
+        <footer className="w-full border-t border-gray-800 relative z-10">
+          <Navbar />
+        </footer>
 
       </body>
     </html>
