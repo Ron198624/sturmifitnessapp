@@ -41,7 +41,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 w-full bg-black border-t border-gray-700 py-2 flex justify-around z-50">
+  <nav className="fixed bottom-0 left-0 w-full bg-red-600 border-t border-gray-700 py-2 flex justify-around z-50">
       {navItems.map((item) => {
         const Icon = item.icon;
         const active = pathname === item.href;
