@@ -3,6 +3,30 @@
 @tailwind utilities;
 
 /* ========================= */
+/*   GLOBAL DESIGN           */
+/* ========================= */
+
+body {
+  background-color: #000;
+  color: white;
+}
+
+/* Neon Farben */
+.text-neon-green {
+  color: #00ff9d;
+}
+
+/* Card Style */
+.card {
+  background: rgba(20, 20, 20, 0.8);
+  border: 1px solid #333;
+  border-radius: 16px;
+  padding: 20px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 20px rgba(0, 255, 150, 0.15);
+}
+
+/* ========================= */
 /*   MATRIX CODE REGEN       */
 /* ========================= */
 
