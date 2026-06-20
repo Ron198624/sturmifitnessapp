@@ -2,341 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-/* -----------------------------------
-   GLOBAL DARK NEON GYM THEME
------------------------------------ */
-:root {
-  --bg: #0a0a0a;
-  --bg-card: #111;
-  --text: #e5e5e5;
-  --text-dim: #999;
-  --neon: #32cc12;
-  --neon-glow: 0 0 12px #32cc12;
-  --radius: 10px;
-  --transition: 0.2s ease;
-}
+/* ========================= */
+/*   MATRIX CODE REGEN       */
+/* ========================= */
 
-html, body {
-  margin: 0;
-  padding: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: Arial, Helvetica, sans-serif;
-}
+@layer utilities {
 
-body {
-  overflow-x: hidden;
-}
-
-/* -----------------------------------
-   NAVBAR
------------------------------------ */
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px 32px;
-  background: #0f0f0f;
-  border-bottom: 1px solid var(--neon);
-  box-shadow: var(--neon-glow);
-  font-size: 1.3rem;
-}
-
-.logo {
-  font-size: 1.6rem;
-  font-weight: bold;
-  color: var(--neon);
-  text-shadow: var(--neon-glow);
-}
-
-.nav-right a {
-  margin-left: 24px;
-  color: var(--text);
-  text-decoration: none;
-  font-size: 1.1rem;
-  transition: var(--transition);
-}
-
-.nav-right a:hover {
-  color: var(--neon);
-  text-shadow: var(--neon-glow);
-}
-
-/* -----------------------------------
-   CONTAINER & CARDS
------------------------------------ */
-
-.container {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 0 20px;
-}
-
-.card {
-  background: var(--bg-card);
-  padding: 24px;
-  border-radius: var(--radius);
-  margin-bottom: 30px;
-  border: 1px solid #1a1a1a;
-  box-shadow: 0 0 10px #000, var(--neon-glow);
-}
-
-/* -----------------------------------
-   HEADINGS
------------------------------------ */
-
-h1, h2 {
-  color: var(--neon);
-  text-shadow: var(--neon-glow);
-  margin-bottom: 16px;
-}
-
-/* -----------------------------------
-   BUTTONS
------------------------------------ */
-
-.btn {
-  background: var(--neon);
-  color: #000;
-  padding: 12px 20px;
-  border-radius: var(--radius);
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  transition: var(--transition);
-  box-shadow: var(--neon-glow);
-}
-
-.btn:hover {
-  background: #28a50f;
-  box-shadow: 0 0 18px #32cc12;
-}
-
-.btn-secondary {
-  background: #222;
-  color: var(--text);
-  padding: 10px 16px;
-  border-radius: var(--radius);
-  border: 1px solid var(--neon);
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.btn-secondary:hover {
-  color: var(--neon);
-  box-shadow: var(--neon-glow);
-}
-
-.btn-danger {
-  background: #440000;
-  color: #ff4444;
-  padding: 10px 16px;
-  border-radius: var(--radius);
-  border: 1px solid #ff4444;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.btn-danger:hover {
-  background: #660000;
-  box-shadow: 0 0 12px #ff4444;
-}
-
-/* -----------------------------------
-   FORMS
------------------------------------ */
-
-input, select {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 16px;
-  border-radius: var(--radius);
-  border: 1px solid #333;
-  background: #0f0f0f;
-  color: var(--text);
-  transition: var(--transition);
-}
-
-input:focus, select:focus {
-  border-color: var(--neon);
-  box-shadow: var(--neon-glow);
-  outline: none;
-}
-
-/* -----------------------------------
-   LISTS
------------------------------------ */
-
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-li {
-  background: #0f0f0f;
-  padding: 14px;
-  border-radius: var(--radius);
-  margin-bottom: 12px;
-  border: 1px solid #1a1a1a;
-  box-shadow: var(--neon-glow);
-}
-
-/* -----------------------------------
-   HEADER (optional)
------------------------------------ */
-
-.header {
-  height: 160px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 30px;
-  background-color: var(--bg);
-  border-bottom: 1px solid var(--neon);
-}
-
-.logo-container img {
-  margin-right: 20px;
-}
-
-/* -----------------------------------
-   TRAINING PAGE
------------------------------------ */
-
-.training-container {
-  padding: 40px 20px;
-}
-
-.training-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-width: 300px;
-}
-
-.training-form input,
-.training-form select {
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #444;
-  background: #1a1a1a;
-  color: white;
-}
-
-.training-form button {
-  padding: 12px;
-  background: var(--neon);
-  color: #000;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  box-shadow: var(--neon-glow);
-}
-
-.training-form button:hover {
-  background: #28a50f;
-}
-
-/* -----------------------------------
-   VERLAUF PAGE
------------------------------------ */
-
-.verlauf-container {
-  padding: 40px 20px;
-}
-
-.verlauf-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 20px;
-}
-
-.verlauf-item {
-  background: #1a1a1a;
-  padding: 16px;
-  margin-bottom: 12px;
-  border-radius: 6px;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  box-shadow: var(--neon-glow);
-}
-
-:root {
-  --cyber-gradient: linear-gradient(
-    135deg,
-    #0f0f0f 0%,
-    #111122 20%,
-    #1a0033 40%,
-    #001133 60%,
-    #003322 80%,
-    #00ff99 100%
-  );
-}
-
-:root {
-  --cyber-gradient: linear-gradient(
-    135deg,
-    #0f0f0f,
-    #111122,
-    #1a0033,
-    #001133,
-    #003322,
-    #00ff99
-  );
-}
-
-@keyframes cyberMove {
-  0% {
-    background-position: 0% 50%;
+  .matrix-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -10;
+    overflow: hidden;
   }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
 
-.cyber-bg {
-  background: var(--cyber-gradient);
-  background-size: 400% 400%;
-  animation: cyberMove 12s ease infinite;
-}
-
-/* MATRIX CODE REGEN */
-.matrix-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: -10;
-  overflow: hidden;
-}
-
-.matrix-line {
-  position: absolute;
-  top: -100%;
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(0, 255, 0, 0.8),
-    transparent
-  );
-  animation: matrixFall linear infinite;
-}
-
-@keyframes matrixFall {
-  0% {
+  .matrix-line {
+    position: absolute;
     top: -100%;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(0, 255, 0, 0.8),
+      transparent
+    );
+    animation: matrixFall linear infinite;
   }
-  100% {
-    top: 100%;
+
+  @keyframes matrixFall {
+    0% {
+      top: -100%;
+    }
+    100% {
+      top: 100%;
+    }
   }
+
 }

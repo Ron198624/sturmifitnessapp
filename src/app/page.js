@@ -1,8 +1,7 @@
 export default function HomePage() {
   return (
-    <div className="w-full px-4 pb-24 flex flex-col items-center min-h-screen cyber-bg bg-fixed">
+    <div className="w-full px-4 pb-24 flex flex-col items-center min-h-screen">
 
-      {/* HERO-BEREICH */}
       <div className="card text-center py-12 px-6 w-full max-w-2xl">
         <h1 className="text-4xl font-extrabold mb-6 text-neon-green">
           Willkommen bei SturmFitness
@@ -12,7 +11,6 @@ export default function HomePage() {
           Deine futuristische FitnessApp für Analyse, Fortschritt und smarte Trainingsdaten.
         </p>
 
-        {/* HERO-BUTTONS */}
         <div className="flex flex-col sm:flex-row justify-center gap-6">
 
           <a
@@ -36,7 +34,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* FEATURE-LISTE */}
       <div className="card mt-10 w-full max-w-2xl">
         <h2 className="text-3xl font-semibold mb-6 text-neon-green">Was dich erwartet</h2>
 
