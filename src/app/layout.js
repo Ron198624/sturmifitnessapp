@@ -29,8 +29,11 @@ export default function RootLayout({ children }) {
           ))}
         </div>
 
-        {/* HEADER */}
-        <header className="w-full flex flex-col items-center py-4 border-b border-gray-800 z-10">
+        {/* NAVBAR OBEN */}
+        <Navbar />
+
+        {/* LOGO */}
+        <header className="w-full flex flex-col items-center py-4 z-10">
           <Image
             src="/Logo.png"
             alt="SturmiFitness Logo"
@@ -45,11 +48,6 @@ export default function RootLayout({ children }) {
         <main className="flex-1 w-full px-4 z-10">
           {children}
         </main>
-
-        {/* NAVIGATION */}
-        <header className="w-full border-b border-gray-800 z-10">
-          <Navbar />
-        </header>
 
       </body>
     </html>

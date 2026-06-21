@@ -1,3 +1,5 @@
+// src/app/components/Navbar.js
+
 "use client";
 
 import Link from "next/link";
@@ -21,35 +23,36 @@ export default function Navbar() {
     window.location.reload();
   }
 
-  // FETTE, BREITE, ZENTRIERTE KACHELN
-  const base =
-    "min-w-[180px] px-8 py-5 text-xl font-bold rounded-2xl border border-gray-700 bg-gray-900 text-neon-green text-center " +
-    "transition shadow-[0_0_16px_rgba(0,255,0,0.5)] " +
-    "hover:shadow-[0_0_28px_rgba(168,85,247,1)] hover:border-purple-500 hover:text-purple-400";
-
   return (
-    <nav className="w-full flex flex-wrap justify-center gap-6 mt-6">
-
-      <Link href="/" className={base}>Home</Link>
-      <Link href="/training" className={base}>Training</Link>
-      <Link href="/cardio" className={base}>Cardio</Link>
-      <Link href="/analyse" className={base}>Analyse</Link>
-      <Link href="/verlauf" className={base}>Verlauf</Link>
+    <nav className="
+      w-full 
+      bg-black/80 
+      backdrop-blur-md 
+      border-b border-gray-700 
+      shadow-[0_0_20px_rgba(0,255,150,0.15)]
+      flex justify-center gap-6 py-4
+      text-lg font-semibold text-[#00ff9d]
+      z-50
+    ">
+      <Link href="/" className="hover:text-purple-400">Home</Link>
+      <Link href="/training" className="hover:text-purple-400">Training</Link>
+      <Link href="/cardio" className="hover:text-purple-400">Cardio</Link>
+      <Link href="/analyse" className="hover:text-purple-400">Analyse</Link>
+      <Link href="/verlauf" className="hover:text-purple-400">Verlauf</Link>
 
       {user ? (
         <button
           onClick={logout}
-          className="min-w-[180px] px-8 py-5 text-xl font-bold rounded-2xl border border-red-700 bg-gray-900 text-red-400 text-center transition shadow-[0_0_16px_rgba(255,0,0,0.5)] hover:shadow-[0_0_28px_rgba(255,0,0,1)] hover:border-red-500"
+          className="ml-2 px-3 py-1 bg-purple-600 rounded hover:bg-purple-700"
         >
           Logout
         </button>
       ) : (
         <>
-          <Link href="/login" className={base}>Login</Link>
-          <Link href="/signup" className={base}>Signup</Link>
+          <Link href="/login" className="hover:text-purple-400">Login</Link>
+          <Link href="/signup" className="hover:text-purple-400">Signup</Link>
         </>
       )}
-
     </nav>
   );
 }
