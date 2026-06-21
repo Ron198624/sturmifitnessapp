@@ -29,9 +29,6 @@ export default function RootLayout({ children }) {
           ))}
         </div>
 
-        {/* NAVBAR OBEN */}
-        <Navbar />
-
         {/* LOGO */}
         <header className="w-full flex flex-col items-center py-4 z-10">
           <Image
@@ -43,6 +40,9 @@ export default function RootLayout({ children }) {
             className="mb-3"
           />
         </header>
+
+        {/* NAVBAR UNTER DEM LOGO */}
+        <Navbar />
 
         {/* CONTENT */}
         <main className="flex-1 w-full px-4 z-10">

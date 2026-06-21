@@ -23,34 +23,38 @@ export default function Navbar() {
     window.location.reload();
   }
 
+  const navBtn =
+    "px-4 py-2 rounded-xl bg-gray-900 border border-gray-700 text-white text-lg shadow-[0_0_12px_rgba(0,255,150,0.25)] hover:border-purple-500 hover:text-purple-400 transition";
+
   return (
-    <nav className="
-      w-full 
-      bg-black/80 
-      backdrop-blur-md 
-      border-b border-gray-700 
-      shadow-[0_0_20px_rgba(0,255,150,0.15)]
-      flex justify-center gap-6 py-4
-      text-lg font-semibold text-[#00ff9d]
-      z-50
-    ">
-      <Link href="/" className="hover:text-purple-400">Home</Link>
-      <Link href="/training" className="hover:text-purple-400">Training</Link>
-      <Link href="/cardio" className="hover:text-purple-400">Cardio</Link>
-      <Link href="/analyse" className="hover:text-purple-400">Analyse</Link>
-      <Link href="/verlauf" className="hover:text-purple-400">Verlauf</Link>
+    <nav
+      className="
+        w-full 
+        bg-black/85 
+        backdrop-blur-md 
+        border-b border-gray-700 
+        shadow-[0_0_20px_rgba(0,255,150,0.15)]
+        flex flex-wrap justify-center gap-4 py-4
+        z-50
+      "
+    >
+      <Link href="/" className={navBtn}>Home</Link>
+      <Link href="/training" className={navBtn}>Training</Link>
+      <Link href="/cardio" className={navBtn}>Cardio</Link>
+      <Link href="/analyse" className={navBtn}>Analyse</Link>
+      <Link href="/verlauf" className={navBtn}>Verlauf</Link>
 
       {user ? (
         <button
           onClick={logout}
-          className="ml-2 px-3 py-1 bg-purple-600 rounded hover:bg-purple-700"
+          className="px-4 py-2 rounded-xl bg-red-600 text-white text-lg shadow hover:bg-red-700 transition"
         >
           Logout
         </button>
       ) : (
         <>
-          <Link href="/login" className="hover:text-purple-400">Login</Link>
-          <Link href="/signup" className="hover:text-purple-400">Signup</Link>
+          <Link href="/login" className={navBtn}>Login</Link>
+          <Link href="/signup" className={navBtn}>Signup</Link>
         </>
       )}
     </nav>
