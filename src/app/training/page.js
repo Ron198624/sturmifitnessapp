@@ -98,12 +98,12 @@ export default function TrainingPage() {
         <div className="flex flex-col">
           <label className="mb-1 text-neon-green">Sätze</label>
           <input
-            type="number"
-            value={saetze}
-            onChange={(e) => setSaetze(e.target.value)}
-            className="p-2 rounded bg-black border border-gray-700"
-            required
+              className="w-full h-16 px-5 text-xl rounded-2xl bg-gray-900 border border-gray-700 text-white 
+              focus:outline-none focus:border-purple-500 focus:shadow-[0_0_20px_rgba(168,85,247,0.6)]"
+              type="number"
           />
+
+          
         </div>
 
         {/* Speichern */}

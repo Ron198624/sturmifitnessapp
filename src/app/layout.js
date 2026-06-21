@@ -47,9 +47,9 @@ export default function RootLayout({ children }) {
         </main>
 
         {/* NAVIGATION */}
-        <footer className="w-full border-t border-gray-800 z-10">
+        <header className="w-full border-b border-gray-800 z-10">
           <Navbar />
-        </footer>
+        </header>
 
       </body>
     </html>
