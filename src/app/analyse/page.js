@@ -24,7 +24,6 @@ ChartJS.register(
 );
 
 export default function AnalysePage() {
-  // Beispiel-Daten (du hast diese schon in deiner App)
   const volumenProUebung = {
     labels: [
       "Rudermaschine",
@@ -69,13 +68,13 @@ export default function AnalysePage() {
       {
         data: [20, 30, 15, 10, 10, 5, 10],
         backgroundColor: [
-          "rgba(0,255,100,0.8)", // Brust
-          "rgba(0,120,255,0.8)", // Rücken
-          "rgba(150,75,0,0.8)",  // Beine
-          "rgba(180,0,255,0.8)", // Schultern
-          "rgba(255,255,0,0.8)", // Arme
-          "rgba(0,255,255,0.8)", // Core
-          "rgba(0,0,150,0.8)",   // Ganzkörper
+          "rgba(0,255,100,0.8)",
+          "rgba(0,120,255,0.8)",
+          "rgba(150,75,0,0.8)",
+          "rgba(180,0,255,0.8)",
+          "rgba(255,255,0,0.8)",
+          "rgba(0,255,255,0.8)",
+          "rgba(0,0,150,0.8)",
         ],
       },
     ],
@@ -84,25 +83,29 @@ export default function AnalysePage() {
   return (
     <div className="w-full px-4 pb-24 flex flex-col items-center min-h-screen">
 
-      {/* HEADER CARD */}
-      <div className="bg-black/80 backdrop-blur-md border border-gray-700 rounded-2xl p-6 shadow-[0_0_20px_rgba(0,255,150,0.15)] w-full max-w-2xl mt-10 text-center">
-        <h1 className="text-4xl font-extrabold mb-4 text-[#00ff9d]">Analyse</h1>
+      {/* HEADER */}
+      <div className="bg-black/90 backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
+                      shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-2xl mt-10 text-center">
+        <h1 className="text-4xl font-extrabold text-[#00ff9d]">Analyse</h1>
       </div>
 
       {/* VOLUMEN PRO ÜBUNG */}
-      <div className="bg-black/80 backdrop-blur-md border border-gray-700 rounded-2xl p-6 shadow-[0_0_20px_rgba(0,255,150,0.15)] w-full max-w-2xl mt-10">
+      <div className="bg-black/90 backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
+                      shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-2xl mt-10">
         <h2 className="text-2xl font-bold mb-4 text-[#00ff9d]">Volumen pro Übung</h2>
         <Bar data={volumenProUebung} />
       </div>
 
       {/* WOCHENVOLUMEN */}
-      <div className="bg-black/80 backdrop-blur-md border border-gray-700 rounded-2xl p-6 shadow-[0_0_20px_rgba(0,255,150,0.15)] w-full max-w-2xl mt-10">
+      <div className="bg-black/90 backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
+                      shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-2xl mt-10">
         <h2 className="text-2xl font-bold mb-4 text-[#00ff9d]">Wochenvolumen (Kraft + Cardio)</h2>
         <Bar data={wochenVolumen} />
       </div>
 
       {/* MUSKELGRUPPEN */}
-      <div className="bg-black/80 backdrop-blur-md border border-gray-700 rounded-2xl p-6 shadow-[0_0_20px_rgba(0,255,150,0.15)] w-full max-w-2xl mt-10">
+      <div className="bg-black/90 backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
+                      shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-2xl mt-10">
         <h2 className="text-2xl font-bold mb-4 text-[#00ff9d]">Muskelgruppen Übersicht</h2>
         <Pie data={muskelgruppen} />
       </div>
