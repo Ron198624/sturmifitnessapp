@@ -1,30 +1,14 @@
-// src/app/components/Navbar.js
-
-"use client";
-
-import Link from "next/link";
-
 export default function Navbar() {
-  const navBtn =
-    "px-4 py-2 rounded-xl bg-gray-900 border border-gray-700 text-white text-lg shadow-[0_0_12px_rgba(0,255,150,0.25)] hover:border-purple-500 hover:text-purple-400 transition";
-
   return (
-    <nav
-      className="
-        w-full 
-        bg-black/90 
-        backdrop-blur-xl 
-        border-b border-gray-700 
-        shadow-[0_0_20px_rgba(0,255,150,0.15)]
-        flex flex-wrap justify-center gap-4 py-4
-        z-50
-      "
-    >
-      <Link href="/" className={navBtn}>Home</Link>
-      <Link href="/training" className={navBtn}>Training</Link>
-      <Link href="/cardio" className={navBtn}>Cardio</Link>
-      <Link href="/analyse" className={navBtn}>Analyse</Link>
-      <Link href="/verlauf" className={navBtn}>Verlauf</Link>
+    <nav className="w-full bg-black/90 backdrop-blur-xl border-b border-gray-700 
+                    text-white py-4 mb-6">
+      <ul className="flex justify-center gap-10 text-2xl font-semibold">
+        <li><a href="/" className="hover:text-[#00ff9d] transition">Home</a></li>
+        <li><a href="/training" className="hover:text-[#00ff9d] transition">Training</a></li>
+        <li><a href="/cardio" className="hover:text-[#00ff9d] transition">Cardio</a></li>
+        <li><a href="/analyse" className="hover:text-[#00ff9d] transition">Analyse</a></li>
+        <li><a href="/verlauf" className="hover:text-[#00ff9d] transition">Verlauf</a></li>
+      </ul>
     </nav>
   );
 }
