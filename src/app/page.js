@@ -1,12 +1,9 @@
-// src/app/page.js
-
 export default function HomePage() {
   return (
     <div className="w-full px-4 pb-24 flex flex-col items-center min-h-screen">
 
-      {/* HERO */}
-      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-10 
-                      shadow-[0_0_35px_rgba(0,255,150,0.3)] w-full max-w-2xl mt-10 text-center">
+      <div className="bg-black border border-gray-700 backdrop-blur-xl rounded-2xl p-10 shadow-[0_0_35px_rgba(0,255,150,0.3)] w-full max-w-2xl mt-10">
+
         <h1 className="text-5xl font-extrabold mb-6 text-[#00ff9d]">
           Willkommen bei SturmFitness
         </h1>
@@ -36,12 +33,8 @@ export default function HomePage() {
             Analyse starten
           </a>
         </div>
-      </div>
 
-      {/* FEATURES */}
-      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-10 
-                      shadow-[0_0_35px_rgba(0,255,150,0.3)] w-full max-w-2xl mt-10">
-        <h2 className="text-3xl font-semibold mb-6 text-[#00ff9d]">Was dich erwartet</h2>
+        <h2 className="text-3xl font-semibold mt-12 mb-6 text-[#00ff9d]">Was dich erwartet</h2>
 
         <ul className="space-y-4 text-xl text-gray-300">
           <li>📊 Fortschrittliche Trainingsanalyse</li>
@@ -49,6 +42,7 @@ export default function HomePage() {
           <li>🧮 Automatische Volumen- und PR-Berechnung</li>
           <li>🌈 Neon-Cyber-Gym-Design für maximale Motivation</li>
         </ul>
+
       </div>
 
     </div>
