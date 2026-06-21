@@ -12,7 +12,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="de">
-      <body className="bg-black text-white min-h-screen flex flex-col relative overflow-x-hidden">
+      <body className="bg-black text-white min-h-screen flex flex-col relative overflow-x-hidden z-0">
 
         {/* MATRIX CODE REGEN – GANZ HINTEN */}
         <div className="matrix-bg">

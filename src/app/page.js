@@ -1,6 +1,6 @@
 export default function HomePage() {
   return (
-    <div className="w-full px-4 pb-24 flex flex-col items-center min-h-screen">
+    <div className="w-full min-h-screen bg-black flex flex-col items-center px-4 pb-24">
 
       <div className="bg-black border border-gray-700 backdrop-blur-xl rounded-2xl p-10 shadow-[0_0_35px_rgba(0,255,150,0.3)] w-full max-w-2xl mt-10">
 
