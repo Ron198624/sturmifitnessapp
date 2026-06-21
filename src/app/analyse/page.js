@@ -84,27 +84,27 @@ export default function AnalysePage() {
     <div className="w-full px-4 pb-24 flex flex-col items-center min-h-screen">
 
       {/* HEADER */}
-      <div className="bg-black/90 backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
+      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
                       shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-2xl mt-10 text-center">
         <h1 className="text-4xl font-extrabold text-[#00ff9d]">Analyse</h1>
       </div>
 
       {/* VOLUMEN PRO ÜBUNG */}
-      <div className="bg-black/90 backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
+      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
                       shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-2xl mt-10">
         <h2 className="text-2xl font-bold mb-4 text-[#00ff9d]">Volumen pro Übung</h2>
         <Bar data={volumenProUebung} />
       </div>
 
       {/* WOCHENVOLUMEN */}
-      <div className="bg-black/90 backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
+      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
                       shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-2xl mt-10">
         <h2 className="text-2xl font-bold mb-4 text-[#00ff9d]">Wochenvolumen (Kraft + Cardio)</h2>
         <Bar data={wochenVolumen} />
       </div>
 
       {/* MUSKELGRUPPEN */}
-      <div className="bg-black/90 backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
+      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
                       shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-2xl mt-10">
         <h2 className="text-2xl font-bold mb-4 text-[#00ff9d]">Muskelgruppen Übersicht</h2>
         <Pie data={muskelgruppen} />

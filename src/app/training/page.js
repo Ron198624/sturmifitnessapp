@@ -7,13 +7,13 @@ export default function TrainingPage() {
     <div className="w-full px-4 pb-24 flex flex-col items-center min-h-screen">
 
       {/* HEADER CONTAINER */}
-      <div className="bg-black/90 backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
+      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
                       shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-2xl mt-10 text-center">
         <h1 className="text-4xl font-extrabold text-[#00ff9d]">Training</h1>
       </div>
 
       {/* FORM CONTAINER */}
-      <div className="bg-black/90 backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
+      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
                       shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-2xl mt-10">
 
         {/* Übung */}

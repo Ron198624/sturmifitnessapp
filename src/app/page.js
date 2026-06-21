@@ -5,7 +5,7 @@ export default function HomePage() {
     <div className="w-full px-4 pb-24 flex flex-col items-center min-h-screen">
 
       {/* HERO */}
-      <div className="bg-black/90 backdrop-blur-xl border border-gray-700 rounded-2xl p-10 
+      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-10 
                       shadow-[0_0_35px_rgba(0,255,150,0.3)] w-full max-w-2xl mt-10 text-center">
         <h1 className="text-5xl font-extrabold mb-6 text-[#00ff9d]">
           Willkommen bei SturmFitness
@@ -39,7 +39,7 @@ export default function HomePage() {
       </div>
 
       {/* FEATURES */}
-      <div className="bg-black/90 backdrop-blur-xl border border-gray-700 rounded-2xl p-10 
+      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-10 
                       shadow-[0_0_35px_rgba(0,255,150,0.3)] w-full max-w-2xl mt-10">
         <h2 className="text-3xl font-semibold mb-6 text-[#00ff9d]">Was dich erwartet</h2>
 
