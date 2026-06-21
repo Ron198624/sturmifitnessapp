@@ -1,3 +1,5 @@
+"use client";
+
 export default function Navbar() {
   return (
     <nav className="w-full bg-black/90 backdrop-blur-xl border-b border-gray-700 py-5">
