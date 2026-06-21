@@ -14,20 +14,7 @@ export default function RootLayout({ children }) {
     <html lang="de">
       <body className="bg-black text-white min-h-screen flex flex-col relative overflow-x-hidden z-0">
 
-        {/* MATRIX CODE REGEN – GANZ HINTEN */}
-        <div className="matrix-bg">
-          {Array.from({ length: 40 }).map((_, i) => (
-            <div
-              key={i}
-              className="matrix-line"
-              style={{
-                left: `${Math.random() * 100}%`,
-                animationDuration: `${4 + Math.random() * 6}s`,
-                animationDelay: `${Math.random() * 5}s`,
-              }}
-            ></div>
-          ))}
-        </div>
+        
 
         {/* LOGO – ÜBER DEM REGEN */}
         <header className="w-full flex flex-col items-center py-4 z-20">
