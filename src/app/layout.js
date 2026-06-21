@@ -12,9 +12,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="de">
-      <body className="bg-black text-white min-h-screen flex flex-col relative">
+      <body className="bg-black text-white min-h-screen flex flex-col relative overflow-x-hidden">
 
-        {/* MATRIX CODE REGEN */}
+        {/* MATRIX CODE REGEN – GANZ HINTEN */}
         <div className="matrix-bg">
           {Array.from({ length: 40 }).map((_, i) => (
             <div
@@ -29,8 +29,8 @@ export default function RootLayout({ children }) {
           ))}
         </div>
 
-        {/* LOGO */}
-        <header className="w-full flex flex-col items-center py-4 z-10">
+        {/* LOGO – ÜBER DEM REGEN */}
+        <header className="w-full flex flex-col items-center py-4 z-20">
           <Image
             src="/Logo.png"
             alt="SturmiFitness Logo"
@@ -41,11 +41,13 @@ export default function RootLayout({ children }) {
           />
         </header>
 
-        {/* NAVBAR UNTER DEM LOGO */}
-        <Navbar />
+        {/* NAVBAR – MUSS ÜBER DEM REGEN SEIN */}
+        <div className="z-20 w-full">
+          <Navbar />
+        </div>
 
-        {/* CONTENT */}
-        <main className="flex-1 w-full px-4 z-10">
+        {/* CONTENT – AUCH ÜBER DEM REGEN */}
+        <main className="flex-1 w-full px-4 z-20">
           {children}
         </main>
 

@@ -22,9 +22,13 @@ body {
   .matrix-bg {
     position: fixed;
     inset: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
-    z-index: -10;
     overflow: hidden;
+
+    /* WICHTIG: Regen hinter ALLEM */
+    z-index: -1;
   }
 
   .matrix-line {
@@ -49,4 +53,5 @@ body {
       top: 100%;
     }
   }
+
 }
