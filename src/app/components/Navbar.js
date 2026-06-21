@@ -10,4 +10,5 @@ export default function Navbar() {
       </ul>
     </nav>
   );
+  <a href="/" className="text-red-500">Home</a>
 }
