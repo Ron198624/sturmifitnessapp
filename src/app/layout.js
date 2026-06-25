@@ -2,7 +2,7 @@
 
 import "./globals.css";
 import Image from "next/image";
-import Navbar from "./components/Navbar.jsx";
+import Navbar from "./components/Navbar";
 
 export const metadata = {
   title: "SturmiFitness",
