@@ -3,17 +3,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "@/lib/supabaseClient";   // ← EINZIGER Client!
 import { muscleMap } from "../muscleMap";
 
 import NeonLineChart from "../components/NeonLineChart";
 import NeonBarChart from "../components/NeonBarChart";
 import NeonDonutChart from "../components/NeonDonutChart";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
 
 // Muskelgruppen für Heatmap
 const MUSCLE_GROUPS = ["Brust", "Rücken", "Beine", "Schultern", "Arme", "Core"];
