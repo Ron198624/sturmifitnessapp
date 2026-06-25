@@ -27,6 +27,7 @@ export default function SignupPage() {
 
     if (error) {
       setMessage("Registrierung fehlgeschlagen");
+      console.log(error);
     } else {
       setMessage("Account erstellt! Bitte einloggen.");
       router.push("/login");
