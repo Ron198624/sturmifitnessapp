@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
+import { muscleMap } from "../muscleMap";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,

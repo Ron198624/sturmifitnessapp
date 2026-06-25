@@ -2,36 +2,12 @@
 
 import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
+import { muscleMap } from "../muscleMap";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
-
-// ⭐ Profi-Mapping: Mehrere Muskelgruppen pro Übung
-export const muscleMap = {
-  // Brust
-  "Brustpresse": ["Brust", "Trizeps", "Schultern"],
-  "Butterfly": ["Brust", "Schultern"],
-  "Liegestütze": ["Brust", "Trizeps", "Schultern", "Core"],
-
-  // Rücken
-  "Rudermaschine": ["Rücken", "Bizeps"],
-  "Latzug": ["Rücken", "Bizeps"],
-  "Klimmzüge": ["Rücken", "Bizeps", "Unterarme"],
-
-  // Trizeps
-  "Trizeps Maschine": ["Trizeps", "Schultern"],
-
-  // Bizeps
-  "Bizepscurl": ["Bizeps", "Unterarme"],
-
-  // Schultern
-  "Reverse Butterfly": ["Schultern", "Rücken"],
-
-  // Beine
-  "Beinpresse": ["Beine", "Core"],
-};
 
 export default function TrainingPage() {
   const [exercise, setExercise] = useState("");
