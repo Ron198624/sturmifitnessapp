@@ -15,12 +15,15 @@ export default function TrainingPage() {
   const [sets, setSets] = useState("");
 
   async function saveTraining() {
+    const user = await supabase.auth.getUser();
+
     const { error } = await supabase.from("training").insert({
       exercise,
-      weight,
-      reps,
-      sets,
-      created_at: new Date(),
+      weight: Number(weight),
+      repetitions: Number(reps),
+      sets: Number(sets),
+      date: new Date(),
+      user_id: user.data.user.id
     });
 
     if (error) {
@@ -37,6 +40,7 @@ export default function TrainingPage() {
 
   return (
     <div className="w-full px-4 pb-24 flex flex-col items-center min-h-screen">
+
       <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
                       shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-2xl mt-10 text-center">
         <h1 className="text-4xl font-extrabold text-[#00ff9d]">Training</h1>
@@ -94,7 +98,9 @@ export default function TrainingPage() {
         >
           Speichern
         </button>
+
       </div>
+
     </div>
   );
 }
