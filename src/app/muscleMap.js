@@ -40,4 +40,8 @@ export const muscleMap = {
 
   "Hantelbank": ["Brust", "Schultern", "Trizeps"],
   "Bankdrücken": ["Brust", "Schultern", "Trizeps"],
+
+  // ⭐ Cardio
+  "Laufen": ["Beine", "Core"],
+  "Radfahren": ["Beine", "Core"],
 };
