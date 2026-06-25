@@ -14,14 +14,11 @@ export default function CardioPage() {
   const [dauer, setDauer] = useState("");
 
   async function saveCardio() {
-    const user = await supabase.auth.getUser();
-
     const { error } = await supabase.from("cardio_entries").insert({
       exercise_type: art,
       distance_m: Number(distanz),
       duration_min: Number(dauer),
       date: new Date(),
-      user_id: user.data.user.id
     });
 
     if (error) {

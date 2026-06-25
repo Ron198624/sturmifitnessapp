@@ -8,6 +8,31 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
+// ⭐ Profi-Mapping: Mehrere Muskelgruppen pro Übung
+export const muscleMap = {
+  // Brust
+  "Brustpresse": ["Brust", "Trizeps", "Schultern"],
+  "Butterfly": ["Brust", "Schultern"],
+  "Liegestütze": ["Brust", "Trizeps", "Schultern", "Core"],
+
+  // Rücken
+  "Rudermaschine": ["Rücken", "Bizeps"],
+  "Latzug": ["Rücken", "Bizeps"],
+  "Klimmzüge": ["Rücken", "Bizeps", "Unterarme"],
+
+  // Trizeps
+  "Trizeps Maschine": ["Trizeps", "Schultern"],
+
+  // Bizeps
+  "Bizepscurl": ["Bizeps", "Unterarme"],
+
+  // Schultern
+  "Reverse Butterfly": ["Schultern", "Rücken"],
+
+  // Beine
+  "Beinpresse": ["Beine", "Core"],
+};
+
 export default function TrainingPage() {
   const [exercise, setExercise] = useState("");
   const [weight, setWeight] = useState("");
@@ -15,12 +40,10 @@ export default function TrainingPage() {
   const [sets, setSets] = useState("");
 
   async function saveTraining() {
-    const user = await supabase.auth.getUser();
-
     const volumen = Number(weight) * Number(reps) * Number(sets);
 
     const { error } = await supabase.from("training_entries").insert({
-      Datum: new Date().toISOString().split("T")[0], // YYYY-MM-DD
+      Datum: new Date().toISOString().split("T")[0],
       Uebung: exercise,
       Gewicht: Number(weight),
       Wiederholungen: Number(reps),
@@ -59,10 +82,28 @@ export default function TrainingPage() {
                      text-white mt-2 mb-6"
         >
           <option value="">Bitte wählen...</option>
-          <option>Rudermaschine</option>
-          <option>Butterfly</option>
+
+          {/* Brust */}
           <option>Brustpresse</option>
+          <option>Butterfly</option>
+          <option>Liegestütze</option>
+
+          {/* Rücken */}
+          <option>Rudermaschine</option>
           <option>Latzug</option>
+          <option>Klimmzüge</option>
+
+          {/* Trizeps */}
+          <option>Trizeps Maschine</option>
+
+          {/* Bizeps */}
+          <option>Bizepscurl</option>
+
+          {/* Schultern */}
+          <option>Reverse Butterfly</option>
+
+          {/* Beine */}
+          <option>Beinpresse</option>
         </select>
 
         <label className="text-xl text-white">Gewicht (kg)</label>
