@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "@/lib/supabaseClient";
 
 import {
   WeeklyDistanceChart,
@@ -13,10 +13,7 @@ import {
 import SportIcon from "@/app/components/SportIcon";
 import { FaRunning, FaBiking, FaSwimmer } from "react-icons/fa";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
+
 
 export default function CardioDashboard() {
   const [entries, setEntries] = useState([]);
