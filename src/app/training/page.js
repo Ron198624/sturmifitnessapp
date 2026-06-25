@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
@@ -18,20 +18,34 @@ export default function TrainingPage() {
   async function saveTraining() {
     const volumen = Number(weight) * Number(reps) * Number(sets);
 
+    // USER LADEN
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      alert("Kein Benutzer eingeloggt");
+      return;
+    }
+
+    // MUSCLE MAP INDEX
+    const muscleIndex = muscleMap[exercise] ?? null;
+
+    // EINTRAG SPEICHERN
     const { error } = await supabase.from("training_entries").insert({
-      Datum: new Date().toISOString().split("T")[0],
+      user_id: user.id,                 // ← ENTSCHEIDEND!
       Uebung: exercise,
       Gewicht: Number(weight),
       Wiederholungen: Number(reps),
       Saetze: Number(sets),
-      Volumen: volumen
+      Volumen: volumen,
+      muscle_index: muscleIndex,        // ← ENTSCHEIDEND!
+      Datum: new Date().toISOString().split("T")[0],
     });
 
     if (error) {
       alert("Fehler beim Speichern");
       console.log(error);
     } else {
-      alert("Training gespeichert");
+      alert("Training gespeichert!");
       setExercise("");
       setWeight("");
       setReps("");
@@ -60,27 +74,27 @@ export default function TrainingPage() {
           <option value="">Bitte wählen...</option>
 
           {/* Brust */}
-          <option>Brustpresse</option>
-          <option>Butterfly</option>
-          <option>Liegestütze</option>
+          <option value="Brustpresse">Brustpresse</option>
+          <option value="Butterfly">Butterfly</option>
+          <option value="Liegestütze">Liegestütze</option>
 
           {/* Rücken */}
-          <option>Rudermaschine</option>
-          <option>Latzug</option>
-          <option>Klimmzüge</option>
+          <option value="Rudermaschine">Rudermaschine</option>
+          <option value="Latzug">Latzug</option>
+          <option value="Klimmzüge">Klimmzüge</option>
           <option value="Rückenstrecker">Rückenstrecker</option>
 
           {/* Trizeps */}
-          <option>Trizeps Maschine</option>
+          <option value="Trizeps Maschine">Trizeps Maschine</option>
 
           {/* Bizeps */}
-          <option>Bizepscurl</option>
+          <option value="Bizepscurl">Bizepscurl</option>
 
           {/* Schultern */}
-          <option>Reverse Butterfly</option>
+          <option value="Reverse Butterfly">Reverse Butterfly</option>
 
           {/* Beine */}
-          <option>Beinpresse</option>
+          <option value="Beinpresse">Beinpresse</option>
 
           {/* Home‑Gym */}
           <option value="Hantelbank">Hantelbank</option>

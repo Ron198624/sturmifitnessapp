@@ -15,18 +15,31 @@ export default function CardioPage() {
   const [dauer, setDauer] = useState("");
 
   async function saveCardio() {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      alert("Kein Benutzer eingeloggt");
+      return;
+    }
+
+    const muscleIndex = muscleMap[art] ?? null; // z.B. "schwimmen" → 7
+
     const { error } = await supabase.from("cardio_entries").insert({
+      user_id: user.id,
       exercise_type: art,
       distance_m: Number(distanz),
       duration_min: Number(dauer),
-      date: new Date(),
+      muscle_index: muscleIndex, // ggf. Spaltennamen anpassen
+      date: new Date().toISOString(),
     });
 
     if (error) {
       alert("Fehler beim Speichern");
       console.log(error);
     } else {
-      alert("Cardio gespeichert");
+      alert("Cardio gespeichert!");
       setArt("");
       setDistanz("");
       setDauer("");
@@ -35,26 +48,21 @@ export default function CardioPage() {
 
   return (
     <div className="w-full min-h-screen bg-black flex flex-col items-center px-4 pb-24">
-
-      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
-                      shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-2xl mt-10 text-center">
+      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-8 shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-2xl mt-10 text-center">
         <h1 className="text-4xl font-extrabold text-[#00ff9d]">Cardio</h1>
       </div>
 
-      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
-                      shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-2xl mt-10">
-
+      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-8 shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-2xl mt-10">
         <label className="text-xl text-white">Art</label>
         <select
           value={art}
           onChange={(e) => setArt(e.target.value)}
-          className="w-full h-16 px-5 text-xl rounded-2xl bg-gray-900 border border-gray-700 
-                     text-white mt-2 mb-6"
+          className="w-full h-16 px-5 text-xl rounded-2xl bg-gray-900 border border-gray-700 text-white mt-2 mb-6"
         >
           <option value="">Bitte wählen...</option>
-          <option>Laufen</option>
-          <option>Radfahren</option>
-          <option>Schwimmen</option>
+          <option value="laufen">Laufen</option>
+          <option value="radfahren">Radfahren</option>
+          <option value="schwimmen">Schwimmen</option>
         </select>
 
         <label className="text-xl text-white">Distanz</label>
@@ -62,8 +70,7 @@ export default function CardioPage() {
           type="number"
           value={distanz}
           onChange={(e) => setDistanz(e.target.value)}
-          className="w-full h-16 px-5 text-xl rounded-2xl bg-gray-900 border border-gray-700 
-                     text-white mt-2 mb-6"
+          className="w-full h-16 px-5 text-xl rounded-2xl bg-gray-900 border border-gray-700 text-white mt-2 mb-6"
           placeholder="in km oder m"
         />
 
@@ -72,21 +79,16 @@ export default function CardioPage() {
           type="number"
           value={dauer}
           onChange={(e) => setDauer(e.target.value)}
-          className="w-full h-16 px-5 text-xl rounded-2xl bg-gray-900 border border-gray-700 
-                     text-white mt-2 mb-6"
+          className="w-full h-16 px-5 text-xl rounded-2xl bg-gray-900 border border-gray-700 text-white mt-2 mb-6"
         />
 
         <button
           onClick={saveCardio}
-          className="w-full h-16 text-2xl font-bold rounded-2xl bg-[#00ff9d] text-black 
-                     shadow-[0_0_20px_rgba(0,255,150,0.6)] hover:bg-purple-500 hover:text-white 
-                     transition"
+          className="w-full h-16 text-2xl font-bold rounded-2xl bg-[#00ff9d] text-black shadow-[0_0_20px_rgba(0,255,150,0.6)] hover:bg-purple-500 hover:text-white transition"
         >
           Speichern
         </button>
-
       </div>
-
     </div>
   );
 }
