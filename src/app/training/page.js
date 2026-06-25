@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
@@ -68,6 +68,7 @@ export default function TrainingPage() {
           <option>Rudermaschine</option>
           <option>Latzug</option>
           <option>Klimmzüge</option>
+          <option value="Rückenstrecker">Rückenstrecker</option>
 
           {/* Trizeps */}
           <option>Trizeps Maschine</option>
@@ -80,6 +81,9 @@ export default function TrainingPage() {
 
           {/* Beine */}
           <option>Beinpresse</option>
+
+          {/* Home‑Gym */}
+          <option value="Hantelbank">Hantelbank</option>
         </select>
 
         <label className="text-xl text-white">Gewicht (kg)</label>

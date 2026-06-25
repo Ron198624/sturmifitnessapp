@@ -32,5 +32,12 @@ export const muscleMap = {
     "Trizeps",
     "Core",
     "Beine"
-  ]
+  ],
+
+  // ⭐ Neue Übungen
+  "Rückenstrecker": ["Rücken", "Core", "Beine"],
+  "Hyperextension": ["Rücken", "Core"],
+
+  "Hantelbank": ["Brust", "Schultern", "Trizeps"],
+  "Bankdrücken": ["Brust", "Schultern", "Trizeps"],
 };
