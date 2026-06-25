@@ -1,16 +1,8 @@
 /* src/app/globals.css */
 
-/* ========================================= */
-/*   Tailwind für Next.js 16 (Turbopack)     */
-/* ========================================= */
-
-@import "@tailwindcss/postcss/base";
-@import "@tailwindcss/postcss/components";
-@import "@tailwindcss/postcss/utilities";
-
-/* ========================================= */
-/*   Globales Design                         */
-/* ========================================= */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
   background-color: #000;
