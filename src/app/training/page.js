@@ -17,13 +17,15 @@ export default function TrainingPage() {
   async function saveTraining() {
     const user = await supabase.auth.getUser();
 
-    const { error } = await supabase.from("training").insert({
-      exercise,
-      weight: Number(weight),
-      repetitions: Number(reps),
-      sets: Number(sets),
-      date: new Date(),
-      user_id: user.data.user.id
+    const volumen = Number(weight) * Number(reps) * Number(sets);
+
+    const { error } = await supabase.from("training_entries").insert({
+      Datum: new Date().toISOString().split("T")[0], // YYYY-MM-DD
+      Uebung: exercise,
+      Gewicht: Number(weight),
+      Wiederholungen: Number(reps),
+      Saetze: Number(sets),
+      Volumen: volumen
     });
 
     if (error) {
