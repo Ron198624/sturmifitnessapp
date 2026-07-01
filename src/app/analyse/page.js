@@ -108,25 +108,35 @@ export default function AnalysePage() {
       // -------------------------
       // 3) LINE CHART – Wochenvolumen
       // -------------------------
+//      
       const weekMap = {};
 
       for (const entry of training) {
-        const date = new Date(entry.Datum);
-        const week = `${date.getFullYear()}-KW${Math.ceil(
-          date.getDate() / 7
-        )}`;
+          const date = new Date(entry.Datum);
 
-        const vol =
-          entry.Volumen ||
-          entry.Gewicht * entry.Wiederholungen * entry.Saetze ||
-          0;
+          const startOfYear = new Date(date.getFullYear(), 0, 1);
 
-        if (!weekMap[week]) weekMap[week] = 0;
-        weekMap[week] += vol;
-      }
+          const days = Math.floor(
+                (date - startOfYear) / (24 * 60 * 60 * 1000)
+                  );
 
-      setWeekLabels(Object.keys(weekMap));
-      setWeekVolumes(Object.values(weekMap));
+          const weekNumber = Math.ceil((days + startOfYear.getDay() + 1) / 7);
+
+          const week = `${date.getFullYear()}-KW${weekNumber}`;
+
+          const vol =
+                      entry.Volumen ||
+                      entry.Gewicht * entry.Wiederholungen * entry.Saetze ||
+                          0;
+          if (!weekMap[week]) { 
+            weekMap[week] = 0;
+          }
+          weekMap[week] += vol;
+        }
+      const sortedWeeks = Object.keys(weekMap).sort();
+
+      setWeekLabels(sortedWeeks);
+      setWeekVolumes(sortedWeeks = Object.keys(weekMap[w]).sort());
 
       // -------------------------
       // 4) DONUT – Muskelgruppen
