@@ -136,7 +136,7 @@ export default function AnalysePage() {
       const sortedWeeks = Object.keys(weekMap).sort();
 
       setWeekLabels(sortedWeeks);
-      setWeekVolumes(sortedWeeks = Object.keys(weekMap[w]).sort());
+      setWeekVolumes(sortedWeeks.map ((w) => weekMap[w]));
 
       // -------------------------
       // 4) DONUT – Muskelgruppen
