@@ -24,7 +24,7 @@ export default function Navbar() {
 
   return (
     <nav className="w-full flex justify-center px-4">
-      <div className="flex flex-wrap items-center justify-center gap-3 bg-black/70 backdrop-blur-xl border border-gray-700 rounded-3xl px-6 py-4 shadow-[0_0_25px_rgba(0,255,157,0.25)]">
+      <div className="flex flex-wrap items-center justify-center gap-8 bg-black/70 backdrop-blur-xl border border-gray-700 rounded-3xl px-6 py-4 shadow-[0_0_25px_rgba(0,255,157,0.25)]">
         
         <Link href="/" className={navLinkClass}>
           🏠 Home
