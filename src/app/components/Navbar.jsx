@@ -20,7 +20,7 @@ export default function Navbar() {
   }
 
   const navLinkClass =
-    "px-4 py-2 rounded-2xl text-white font-semibold transition-all duration-300 hover:text-[#00ff9d] hover:bg-gray-900 hover:shadow-[0_0_15px_rgba(0,255,157,0.4)]";
+    "px-6 py-3 text-2xl rounded-2xl text-fuchsia-200 font-bold transition-all duration-300 hover:text-[#00ff9d] hover:bg-gray-900 hover:shadow-[0_0_15px_rgba(0,255,157,0.4)]";
 
   return (
     <nav className="w-full flex justify-center px-4">
