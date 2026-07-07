@@ -24,7 +24,7 @@ export default function Navbar() {
 
   return (
     <nav className="w-full flex justify-center px-4">
-      <div className="flex flex-wrap items-center justify-center gap-8 bg-black/70 backdrop-blur-xl border border-gray-700 rounded-3xl px-6 py-4 shadow-[0_0_25px_rgba(0,255,157,0.25)]">
+      <div className="flex flex-wrap items-center justify-center gap-10 bg-black/70 backdrop-blur-xl border border-gray-700 rounded-3xl px-10 py-5 shadow-[0_0_25px_rgba(0,255,157,0.25)]">
         
         <Link href="/" className={navLinkClass}>
           🏠 Home
@@ -49,7 +49,7 @@ export default function Navbar() {
         {user ? (
           <button
             onClick={logout}
-            className="px-4 py-2 rounded-2xl border border-red-500 text-red-400 font-semibold transition-all duration-300 hover:bg-red-500 hover:text-white hover:shadow-[0_0_15px_rgba(239,68,68,0.8)]"
+            className="px-8 py-4 rounded-2xl border border-red-500 text-red-400 font-semibold transition-all duration-300 hover:bg-red-500 hover:text-white hover:shadow-[0_0_15px_rgba(239,68,68,0.8)]"
           >
             Logout
           </button>
