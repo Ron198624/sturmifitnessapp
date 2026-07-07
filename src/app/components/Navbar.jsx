@@ -1,10 +1,9 @@
+
 "use client";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
-
-
 
 export default function Navbar() {
   const [user, setUser] = useState(null);
@@ -20,34 +19,52 @@ export default function Navbar() {
     window.location.href = "/login";
   }
 
+  const navLinkClass =
+    "px-4 py-2 rounded-2xl text-white font-semibold transition-all duration-300 hover:text-[#00ff9d] hover:bg-gray-900 hover:shadow-[0_0_15px_rgba(0,255,157,0.4)]";
+
   return (
-    <nav className="w-full bg-black/90 backdrop-blur-xl border-b border-gray-700 py-5">
-      <ul className="flex justify-center gap-12 text-2xl font-semibold max-w-4xl mx-auto">
+    <nav className="w-full flex justify-center px-4">
+      <div className="flex flex-wrap items-center justify-center gap-3 bg-black/70 backdrop-blur-xl border border-gray-700 rounded-3xl px-6 py-4 shadow-[0_0_25px_rgba(0,255,157,0.25)]">
+        
+        <Link href="/Home" classname={navLinkClass}>
+          🏠 Home
+        </Link>
 
-        <li><Link href="/" className="text-white hover:text-[#00ff9d] transition">Home</Link></li>
-        <li><Link href="/training" className="text-white hover:text-[#00ff9d] transition">Training</Link></li>
-        <li><Link href="/cardio" className="text-white hover:text-[#00ff9d] transition">Cardio</Link></li>
-        <li><Link href="/analyse" className="text-white hover:text-[#00ff9d] transition">Analyse</Link></li>
-        <li><Link href="/verlauf" className="text-white hover:text-[#00ff9d] transition">Verlauf</Link></li>
+        <Link href="/training" className={navLinkClass}>
+          🏋️ Training
+        </Link>
 
-        {/* LOGIN / LOGOUT */}
+        <Link href="/cardio" className={navLinkClass}>
+          ❤️ Cardio
+        </Link>
+
+        <Link href="/analyse" className={navLinkClass}>
+          📊 Analyse
+        </Link>
+
+        <Link href="/verlauf" className={navLinkClass}>
+          📅 Verlauf
+        </Link>
+
         {user ? (
-          <li>
-            <button
-              onClick={logout}
-              className="text-red-400 hover:text-red-300 transition"
-            >
-              Logout
-            </button>
-          </li>
+          <button
+            onClick={logout}
+            className="px-4 py-2 rounded-2xl border border-red-500 text-red-400 font-semibold transition-all duration-300 hover:bg-red-500 hover:text-white hover:shadow-[0_0_15px_rgba(239,68,68,0.8)]"
+          >
+            Logout
+          </button>
         ) : (
           <>
-            <li><Link href="/login" className="text-white hover:text-[#00ff9d] transition">Login</Link></li>
-            <li><Link href="/signup" className="text-white hover:text-[#00ff9d] transition">Signup</Link></li>
+            <Link href="/login" className={navLinkClass}>
+              Login
+            </Link>
+
+            <Link href="/signup" className={navLinkClass}>
+              Signup
+            </Link>
           </>
         )}
-
-      </ul>
+      </div>
     </nav>
   );
 }
