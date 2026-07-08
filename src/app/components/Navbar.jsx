@@ -33,6 +33,10 @@ export default function Navbar() {
         <Link href="/training" className={navLinkClass}>
           🏋️ Training
         </Link>
+        
+        <Link href="/empfehlung" className={navLinkClass}>
+          🎯 Empfehlung
+        </Link>
 
         <Link href="/cardio" className={navLinkClass}>
           ❤️ Cardio
