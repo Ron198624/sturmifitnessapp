@@ -7,6 +7,8 @@ import { muscleMap } from "../muscleMap";
 export default function EmpfehlungPage() {
 	const [empfehlungen, setEmpfehlungen] = useState([]);
 
+	const [uebungen, setUebungen] = useState({});
+
 	useEffect(() => {
 		async function loadTraining() {
 		const { data: training, error } = await supabase	
@@ -42,7 +44,20 @@ export default function EmpfehlungPage() {
 		.slice(0, 3);
 
 		setEmpfehlungen(sortedMuscles);
+		const exerciseSuggestions = {};
+
+		for (const [muskel] of sortedMuscles) {
+
+			exerciseSuggestions[muskel] = [];
+			
+			for (const [exercise, muscleList] of Object.entries(muscleMap)) {
+
+				if (muscleList.includes(muskel)) {
+					exerciseSuggestions[muskel].push(exercise);
+				}
+			}	
 		 }
+		 setUebungen(exerciseSuggestions);}
 
 	loadTraining();
 	}, []);
@@ -50,6 +65,7 @@ export default function EmpfehlungPage() {
   return (
 	<div className="w-full min-h-screen bg-black flex flex-col items-center px-4 pb-24">   
 		<div className="bg-black border border-gray-700 backdrop-blur-xl rounded-2xl p-8 shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-3xl mt-10 text-center">
+		
 		<h1 className="text-5xl font-extrabold text-[#00ff9d]">
 		🎯 Empfehlung Heute
 		</h1>
@@ -57,11 +73,16 @@ export default function EmpfehlungPage() {
 		<p className="text-gray-400 mt-4 text-xl">
 		Diese Muskelgruppen wurden bisher am wenigsten trainiert.
 		</p>
+
 		</div>
 
 		<div className="w-full max-w-3xl mt-8">
+
 		{empfehlungen.map(([muskel, volumen], index) => (
-			<div key={muskel} className="bg-black border border-gray-700 rounded-2xl p-6 mb-6 shadow-[0_0_20px_rgba(0,255,150,0.15)]">
+			<div 
+				key={muskel} 
+				className="bg-black border border-gray-700 rounded-2xl p-6 mb-6 shadow-[0_0_20px_rgba(0,255,150,0.15)]"
+				>
 					<h2 className="text-3xl font-bold text-white">
 						{index + 1}. {muskel}
 					</h2>
@@ -69,9 +90,27 @@ export default function EmpfehlungPage() {
 					<p className="text-gray-400 mt-3">
 						Gesamtes Trainingsvolumen: {Math.round(volumen)}
 					</p>
+
+					<div className="mt-4">
+						<p className="text-[#00ff9d] font-bold mb-2">
+						Empfohlene Übungen:
+						 </p>
+
+						 {uebungen[muskel]?.map((uebung) => (
+
+							<div
+							key={uebung}
+							className="text-white mb-1"
+							>
+								✅ {uebung}
+							</div>
+						 ))}
+
+					</div>	
 			</div>
-				 ))}
-		</div>
+				 
+		))}
+	 </div>
 	</div>
-	);
+  );
 }
