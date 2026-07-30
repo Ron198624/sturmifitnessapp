@@ -24,14 +24,14 @@ const MUSCLE_ALIAS = {
   Core: "Core",
 };
 
-// ⭐ Muskelbelastungs‑Gewichte
+// ⭐ Muskelbelastungs‑Gewichte (KORRIGIERT)
 const muscleLoadWeights = {
+  // CARDIO
   schwimmen: {
     Rücken: 0.18,
     Schultern: 0.16,
     Brust: 0.14,
-    Bizeps: 0.12,
-    Trizeps: 0.12,
+    Arme: 0.24, // Bizeps + Trizeps + Unterarme zusammengefasst
     Core: 0.14,
     Beine: 0.14,
   },
@@ -43,19 +43,24 @@ const muscleLoadWeights = {
     Beine: 0.6,
     Core: 0.4,
   },
-  // Beispiel Krafttraining
-  "Brustpresse": { Brust: 0.6, Schultern: 0.25, Trizeps: 0.15 },
+
+  // KRAFTTRAINING
+  "Brustpresse": { Brust: 0.6, Schultern: 0.25, Arme: 0.15 },
   "Butterfly": { Brust: 0.7, Schultern: 0.3 },
-  "Liegestütze": { Brust: 0.5, Schultern: 0.3, Trizeps: 0.2 },
-  "Hantelbank": { Brust: 0.6, Schultern: 0.25, Trizeps: 0.15 },
-  "Bankdrücken": { Brust: 0.6, Schultern: 0.25, Trizeps: 0.15 },
-  "Rudermaschine": { Rücken: 0.7, Bizeps: 0.3 },
-  "Latzug": { Rücken: 0.7, Bizeps: 0.3 },
-  "Klimmzüge": { Rücken: 0.6, Bizeps: 0.3, Unterarme: 0.1 },
+  "Liegestütze": { Brust: 0.5, Schultern: 0.3, Arme: 0.2, Core: 0.1 },
+  "Hantelbank": { Brust: 0.6, Schultern: 0.25, Arme: 0.15 },
+  "Bankdrücken": { Brust: 0.6, Schultern: 0.25, Arme: 0.15 },
+
+  "Rudermaschine": { Rücken: 0.7, Arme: 0.3 },
+  "Latzug": { Rücken: 0.7, Arme: 0.3 },
+  "Klimmzüge": { Rücken: 0.6, Arme: 0.4 },
+
   "Rückenstrecker": { Rücken: 0.8, Core: 0.2 },
   "Hyperextension": { Rücken: 0.8, Core: 0.2 },
-  "Trizeps Maschine": { Trizeps: 1.0 },
-  "Bizepscurl": { Bizeps: 1.0 },
+
+  "Trizeps Maschine": { Arme: 1.0 },
+  "Bizepscurl": { Arme: 1.0 },
+
   "Reverse Butterfly": { Schultern: 0.7, Rücken: 0.3 },
   "Beinpresse": { Beine: 0.9, Core: 0.1 },
 };
@@ -155,7 +160,7 @@ export default function AnalysePage() {
       setMaxVolume(max);
 
       // -------------------------
-      // 2) BAR CHART – Volumen pro Übung
+      // 2) BAR CHART – Belastung pro Übung
       // -------------------------
       const exerciseMap = {};
 
@@ -178,7 +183,7 @@ export default function AnalysePage() {
       setExerciseVolumes(Object.values(exerciseMap));
 
       // -------------------------
-      // 3) LINE CHART – Wochenvolumen (ISO‑KW)
+      // 3) LINE CHART – Wochenbelastung
       // -------------------------
       const weekMap = {};
 
