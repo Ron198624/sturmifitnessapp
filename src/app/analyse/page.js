@@ -36,6 +36,24 @@ function getHeatColor(value, max) {
   return "#dc2626";
 }
 
+// ⭐ KORREKTE ISO‑KALENDERWOCHE
+function getISOWeek(date) {
+  const tmp = new Date(date.getTime());
+  tmp.setHours(0, 0, 0, 0);
+  tmp.setDate(tmp.getDate() + 3 - ((tmp.getDay() + 6) % 7));
+  const week1 = new Date(tmp.getFullYear(), 0, 4);
+  const weekNumber =
+    1 +
+    Math.round(
+      ((tmp.getTime() - week1.getTime()) / 86400000 -
+        3 +
+        ((week1.getDay() + 6) % 7)) /
+        7
+    );
+
+  return `${tmp.getFullYear()}-KW${weekNumber}`;
+}
+
 export default function AnalysePage() {
   const [muscleVolume, setMuscleVolume] = useState({});
   const [maxVolume, setMaxVolume] = useState(0);
@@ -111,49 +129,29 @@ export default function AnalysePage() {
       setExerciseVolumes(Object.values(exerciseMap));
 
       // -------------------------
-      // 3) LINE CHART – Wochenvolumen
+      // 3) LINE CHART – Wochenvolumen (ISO‑KW)
       // -------------------------
-//      
       const weekMap = {};
-
- HEAD
-      for (const entry of training) {
-          const date = new Date(entry.Datum);
-
-          const startOfYear = new Date(date.getFullYear(), 0, 1);
-
-          const days = Math.floor(
-                (date - startOfYear) / (24 * 60 * 60 * 1000)
-                  );
 
       for (const entry of allEntries) {
         const date = new Date(entry.date);
-        const week = `${date.getFullYear()}-KW${Math.ceil(
-          date.getDate() / 7
-        )}`;
+        const week = getISOWeek(date);
 
         if (!weekMap[week]) weekMap[week] = 0;
         weekMap[week] += entry.volumen;
       }
- 
 
-          const weekNumber = Math.ceil((days + startOfYear.getDay() + 1) / 7);
+      // ⭐ Wochen korrekt sortieren
+      const sortedWeeks = Object.keys(weekMap).sort((a, b) => {
+        const [yearA, weekA] = a.split("-KW").map(Number);
+        const [yearB, weekB] = b.split("-KW").map(Number);
 
-          const week = `${date.getFullYear()}-KW${weekNumber}`;
-
-          const vol =
-                      entry.Volumen ||
-                      entry.Gewicht * entry.Wiederholungen * entry.Saetze ||
-                          0;
-          if (!weekMap[week]) { 
-            weekMap[week] = 0;
-          }
-          weekMap[week] += vol;
-        }
-      const sortedWeeks = Object.keys(weekMap).sort();
+        if (yearA !== yearB) return yearA - yearB;
+        return weekA - weekB;
+      });
 
       setWeekLabels(sortedWeeks);
-      setWeekVolumes(sortedWeeks.map ((w) => weekMap[w]));
+      setWeekVolumes(sortedWeeks.map((w) => weekMap[w]));
 
       // -------------------------
       // 4) DONUT – Muskelgruppen
