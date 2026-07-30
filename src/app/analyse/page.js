@@ -24,6 +24,42 @@ const MUSCLE_ALIAS = {
   Core: "Core",
 };
 
+// ⭐ Muskelbelastungs‑Gewichte
+const muscleLoadWeights = {
+  schwimmen: {
+    Rücken: 0.18,
+    Schultern: 0.16,
+    Brust: 0.14,
+    Bizeps: 0.12,
+    Trizeps: 0.12,
+    Core: 0.14,
+    Beine: 0.14,
+  },
+  laufen: {
+    Beine: 0.7,
+    Core: 0.3,
+  },
+  radfahren: {
+    Beine: 0.6,
+    Core: 0.4,
+  },
+  // Beispiel Krafttraining
+  "Brustpresse": { Brust: 0.6, Schultern: 0.25, Trizeps: 0.15 },
+  "Butterfly": { Brust: 0.7, Schultern: 0.3 },
+  "Liegestütze": { Brust: 0.5, Schultern: 0.3, Trizeps: 0.2 },
+  "Hantelbank": { Brust: 0.6, Schultern: 0.25, Trizeps: 0.15 },
+  "Bankdrücken": { Brust: 0.6, Schultern: 0.25, Trizeps: 0.15 },
+  "Rudermaschine": { Rücken: 0.7, Bizeps: 0.3 },
+  "Latzug": { Rücken: 0.7, Bizeps: 0.3 },
+  "Klimmzüge": { Rücken: 0.6, Bizeps: 0.3, Unterarme: 0.1 },
+  "Rückenstrecker": { Rücken: 0.8, Core: 0.2 },
+  "Hyperextension": { Rücken: 0.8, Core: 0.2 },
+  "Trizeps Maschine": { Trizeps: 1.0 },
+  "Bizepscurl": { Bizeps: 1.0 },
+  "Reverse Butterfly": { Schultern: 0.7, Rücken: 0.3 },
+  "Beinpresse": { Beine: 0.9, Core: 0.1 },
+};
+
 // Farbskala für Heatmap
 function getHeatColor(value, max) {
   if (max === 0) return "rgba(80,80,80,0.6)";
@@ -82,16 +118,14 @@ export default function AnalysePage() {
       // Einträge vereinheitlichen
       const allEntries = [
         ...training.map((t) => ({
-          volumen:
-            t.Volumen ||
-            t.Gewicht * t.Wiederholungen * t.Saetze ||
-            0,
+          baseVolume:
+            t.Gewicht * t.Wiederholungen * t.Saetze || 0,
           muscles: muscleMap[t.Uebung] || [],
           name: t.Uebung,
           date: t.Datum,
         })),
         ...cardio.map((c) => ({
-          volumen: c.volume || (c.distance_m * c.duration_min),
+          baseVolume: c.duration_min, // ⭐ Cardio = Minuten
           muscles: muscleMap[c.exercise_type] || [],
           name: c.exercise_type,
           date: c.date,
@@ -99,15 +133,20 @@ export default function AnalysePage() {
       ];
 
       // -------------------------
-      // 1) MUSKELVOLUMEN HEATMAP
+      // 1) MUSKELBELASTUNG HEATMAP
       // -------------------------
       const volumePerMuscle = {};
 
       for (const entry of allEntries) {
+        const weights = muscleLoadWeights[entry.name] || {};
+
         for (const m of entry.muscles) {
           const group = MUSCLE_ALIAS[m] || m;
+          const w = weights[group] ?? 0;
+
           if (!volumePerMuscle[group]) volumePerMuscle[group] = 0;
-          volumePerMuscle[group] += entry.volumen;
+
+          volumePerMuscle[group] += entry.baseVolume * w;
         }
       }
 
@@ -122,7 +161,17 @@ export default function AnalysePage() {
 
       for (const entry of allEntries) {
         if (!exerciseMap[entry.name]) exerciseMap[entry.name] = 0;
-        exerciseMap[entry.name] += entry.volumen;
+
+        const weights = muscleLoadWeights[entry.name] || {};
+        let sum = 0;
+
+        for (const m of entry.muscles) {
+          const group = MUSCLE_ALIAS[m] || m;
+          const w = weights[group] ?? 0;
+          sum += entry.baseVolume * w;
+        }
+
+        exerciseMap[entry.name] += sum;
       }
 
       setExerciseNames(Object.keys(exerciseMap));
@@ -137,11 +186,19 @@ export default function AnalysePage() {
         const date = new Date(entry.date);
         const week = getISOWeek(date);
 
+        const weights = muscleLoadWeights[entry.name] || {};
+        let sum = 0;
+
+        for (const m of entry.muscles) {
+          const group = MUSCLE_ALIAS[m] || m;
+          const w = weights[group] ?? 0;
+          sum += entry.baseVolume * w;
+        }
+
         if (!weekMap[week]) weekMap[week] = 0;
-        weekMap[week] += entry.volumen;
+        weekMap[week] += sum;
       }
 
-      // ⭐ Wochen korrekt sortieren
       const sortedWeeks = Object.keys(weekMap).sort((a, b) => {
         const [yearA, weekA] = a.split("-KW").map(Number);
         const [yearB, weekB] = b.split("-KW").map(Number);
@@ -169,7 +226,7 @@ export default function AnalysePage() {
       <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-8 shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-4xl mt-10 text-center">
         <h1 className="text-4xl font-extrabold text-[#00ff9d]">Analyse</h1>
         <p className="text-gray-400 mt-2">
-          Heatmap + Neon Charts basierend auf deinem Trainingsvolumen
+          Muskelbelastung basierend auf realistischen Prozentanteilen
         </p>
       </div>
 
@@ -189,12 +246,12 @@ export default function AnalysePage() {
       {/* CHART SECTION */}
       <div className="w-full max-w-4xl mt-10 grid grid-cols-1 gap-6">
         <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-6">
-          <h2 className="text-2xl font-bold mb-4 text-[#00ff9d]">Volumen pro Übung</h2>
+          <h2 className="text-2xl font-bold mb-4 text-[#00ff9d]">Belastung pro Übung</h2>
           <NeonBarChart labels={exerciseNames} values={exerciseVolumes} />
         </div>
 
         <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-6">
-          <h2 className="text-2xl font-bold mb-4 text-[#00ff9d]">Wochenvolumen</h2>
+          <h2 className="text-2xl font-bold mb-4 text-[#00ff9d]">Wochenbelastung</h2>
           <NeonLineChart labels={weekLabels} values={weekVolumes} />
         </div>
 
@@ -268,7 +325,6 @@ function SilhouetteHeatmap({ muscleVolume, maxVolume }) {
     </div>
   );
 }
-
 // ---------------- GRID HEATMAP ----------------
 
 function MuscleGrid({ muscleVolume, maxVolume }) {
@@ -288,7 +344,7 @@ function MuscleGrid({ muscleVolume, maxVolume }) {
             <div className="flex items-center justify-between">
               <span className="text-lg font-semibold text-white">{m}</span>
               <span className="text-sm text-gray-400">
-                {value > 0 ? `${value.toFixed(0)} Volumen` : "kein Volumen"}
+                {value > 0 ? `${value.toFixed(1)} Belastung` : "keine Belastung"}
               </span>
             </div>
 
