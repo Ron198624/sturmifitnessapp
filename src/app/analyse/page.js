@@ -116,7 +116,7 @@ export default function AnalysePage() {
 //      
       const weekMap = {};
 
-<<<<<<< HEAD
+ HEAD
       for (const entry of training) {
           const date = new Date(entry.Datum);
 
@@ -125,7 +125,7 @@ export default function AnalysePage() {
           const days = Math.floor(
                 (date - startOfYear) / (24 * 60 * 60 * 1000)
                   );
-=======
+
       for (const entry of allEntries) {
         const date = new Date(entry.date);
         const week = `${date.getFullYear()}-KW${Math.ceil(
@@ -135,7 +135,7 @@ export default function AnalysePage() {
         if (!weekMap[week]) weekMap[week] = 0;
         weekMap[week] += entry.volumen;
       }
->>>>>>> 6c07f0e (Analyse + Cardio Integration final)
+ 
 
           const weekNumber = Math.ceil((days + startOfYear.getDay() + 1) / 7);
 
