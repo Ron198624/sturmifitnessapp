@@ -27,7 +27,7 @@ export default function CardioPage() {
 
     const { error } = await supabase.from("cardio_entries").insert({
       user_id: user.id,
-      exercise_type: art,
+      exercise_type: art.toLowerCase(),
       distance_m: Number(distanz),
       duration_min: Number(dauer),
       volume: cardioVolume,
