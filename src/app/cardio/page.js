@@ -4,8 +4,6 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { muscleMap } from "../muscleMap";
 
-
-
 export default function CardioPage() {
   const [art, setArt] = useState("");
   const [distanz, setDistanz] = useState("");
@@ -21,14 +19,19 @@ export default function CardioPage() {
       return;
     }
 
-    const muscleIndex = muscleMap[art] ?? null; // z.B. "schwimmen" → 7
+    // Cardio-Volumen: Distanz × Dauer
+    const cardioVolume = Number(distanz) * Number(dauer);
+
+    // Muskelgruppen aus muscleMap
+    const muscles = muscleMap[art] ?? [];
 
     const { error } = await supabase.from("cardio_entries").insert({
       user_id: user.id,
       exercise_type: art,
       distance_m: Number(distanz),
       duration_min: Number(dauer),
-      muscle_index: muscleIndex, // ggf. Spaltennamen anpassen
+      volume: cardioVolume,
+      muscles: muscles, // JSON array
       date: new Date().toISOString(),
     });
 
@@ -45,11 +48,17 @@ export default function CardioPage() {
 
   return (
     <div className="w-full min-h-screen bg-black flex flex-col items-center px-4 pb-24">
-      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-8 shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-2xl mt-10 text-center">
+      {/* HEADER */}
+      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
+                      shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-2xl mt-10 text-center">
         <h1 className="text-4xl font-extrabold text-[#00ff9d]">Cardio</h1>
       </div>
 
-      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-8 shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-2xl mt-10">
+      {/* FORM */}
+      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-8 
+                      shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-2xl mt-10">
+
+        {/* ART */}
         <label className="text-xl text-white">Art</label>
         <select
           value={art}
@@ -62,6 +71,7 @@ export default function CardioPage() {
           <option value="schwimmen">Schwimmen</option>
         </select>
 
+        {/* DISTANZ */}
         <label className="text-xl text-white">Distanz</label>
         <input
           type="number"
@@ -71,6 +81,7 @@ export default function CardioPage() {
           placeholder="in km oder m"
         />
 
+        {/* DAUER */}
         <label className="text-xl text-white">Dauer (Minuten)</label>
         <input
           type="number"
@@ -79,9 +90,11 @@ export default function CardioPage() {
           className="w-full h-16 px-5 text-xl rounded-2xl bg-gray-900 border border-gray-700 text-white mt-2 mb-6"
         />
 
+        {/* BUTTON */}
         <button
           onClick={saveCardio}
-          className="w-full h-16 text-2xl font-bold rounded-2xl bg-[#00ff9d] text-black shadow-[0_0_20px_rgba(0,255,150,0.6)] hover:bg-purple-500 hover:text-white transition"
+          className="w-full h-16 text-2xl font-bold rounded-2xl bg-[#00ff9d] text-black 
+                     shadow-[0_0_20px_rgba(0,255,150,0.6)] hover:bg-purple-500 hover:text-white transition"
         >
           Speichern
         </button>
