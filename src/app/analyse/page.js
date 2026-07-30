@@ -94,6 +94,12 @@ function getISOWeek(date) {
 
   return `${tmp.getFullYear()}-KW${weekNumber}`;
 }
+// Cardio Intensität nach Sportart
+const cardioIntensity = {
+  schwimmen: 10,   // sehr intensiv
+  laufen: 5,       // mittel
+  radfahren: 3,    // leicht-mittel
+};
 
 export default function AnalysePage() {
   const [muscleVolume, setMuscleVolume] = useState({});
@@ -130,7 +136,8 @@ export default function AnalysePage() {
           date: t.Datum,
         })),
         ...cardio.map((c) => ({
-          baseVolume: c.duration_min, // ⭐ Cardio = Minuten
+          baseVolume: c.duration_min * (cardioIntensity[c.exercise_type] || 1),
+ 
           muscles: muscleMap[c.exercise_type] || [],
           name: c.exercise_type,
           date: c.date,
