@@ -237,19 +237,25 @@ export default function AnalysePage() {
       </div>
 
       {/* CHART SECTION */}
-      <div className="w-full max-w-full lg:max-w-4xl mt-10 grid grid-cols-1 gap-6">
+      <div className="w-full max-w-full md:max-w-3xl lg:max-w-4xl mt-10 grid grid-cols-1 gap-6">
 
-        <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-6 h-[300px] sm:h-[400px]">
+        {/* BAR CHART */}
+        <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-6 
+                  h-[300px] sm:h-[400px] lg:h-[500px] overflow-hidden">
           <h2 className="text-2xl font-bold mb-4 text-[#00ff9d]">Belastung pro Übung</h2>
           <NeonBarChart labels={exerciseNames} values={exerciseVolumes} />
         </div>
 
-        <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-6 h-[300px] sm:h-[400px]">
+        {/* LINE CHART */}
+        <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-6 
+                  h-[300px] sm:h-[400px] lg:h-[500px] overflow-hidden">
           <h2 className="text-2xl font-bold mb-4 text-[#00ff9d]">Wochenbelastung</h2>
           <NeonLineChart labels={weekLabels} values={weekVolumes} />
         </div>
 
-        <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-6 h-[300px] sm:h-[400px]">
+  {/* DONUT CHART */}
+    <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-6 
+                  h-[300px] sm:h-[400px] lg:h-[500px] overflow-hidden">
           <h2 className="text-2xl font-bold mb-4 text-[#00ff9d]">Muskelgruppen‑Verteilung</h2>
           <NeonDonutChart labels={donutLabels} values={donutValues} />
         </div>
