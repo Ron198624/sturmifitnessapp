@@ -26,25 +26,17 @@ const MUSCLE_ALIAS = {
 
 // ⭐ Muskelbelastungs‑Gewichte (KORRIGIERT)
 const muscleLoadWeights = {
-  // CARDIO
   schwimmen: {
     Rücken: 0.18,
     Schultern: 0.16,
     Brust: 0.14,
-    Arme: 0.24, // Bizeps + Trizeps + Unterarme zusammengefasst
+    Arme: 0.24,
     Core: 0.14,
     Beine: 0.14,
   },
-  laufen: {
-    Beine: 0.7,
-    Core: 0.3,
-  },
-  radfahren: {
-    Beine: 0.6,
-    Core: 0.4,
-  },
+  laufen: { Beine: 0.7, Core: 0.3 },
+  radfahren: { Beine: 0.6, Core: 0.4 },
 
-  // KRAFTTRAINING
   "Brustpresse": { Brust: 0.6, Schultern: 0.25, Arme: 0.15 },
   "Butterfly": { Brust: 0.7, Schultern: 0.3 },
   "Liegestütze": { Brust: 0.5, Schultern: 0.3, Arme: 0.2, Core: 0.1 },
@@ -94,11 +86,12 @@ function getISOWeek(date) {
 
   return `${tmp.getFullYear()}-KW${weekNumber}`;
 }
+
 // Cardio Intensität nach Sportart
 const cardioIntensity = {
-  schwimmen: 10,   // sehr intensiv
-  laufen: 5,       // mittel
-  radfahren: 3,    // leicht-mittel
+  schwimmen: 10,
+  laufen: 5,
+  radfahren: 3,
 };
 
 export default function AnalysePage() {
@@ -116,17 +109,14 @@ export default function AnalysePage() {
 
   useEffect(() => {
     async function load() {
-      // Krafttraining laden
       const { data: training } = await supabase
         .from("training_entries")
         .select("*");
 
-      // Cardio laden
       const { data: cardio } = await supabase
         .from("cardio_entries")
         .select("*");
 
-      // Einträge vereinheitlichen
       const allEntries = [
         ...training.map((t) => ({
           baseVolume:
@@ -137,16 +127,12 @@ export default function AnalysePage() {
         })),
         ...cardio.map((c) => ({
           baseVolume: c.duration_min * (cardioIntensity[c.exercise_type] || 1),
- 
           muscles: muscleMap[c.exercise_type] || [],
           name: c.exercise_type,
           date: c.date,
         })),
       ];
 
-      // -------------------------
-      // 1) MUSKELBELASTUNG HEATMAP
-      // -------------------------
       const volumePerMuscle = {};
 
       for (const entry of allEntries) {
@@ -166,9 +152,6 @@ export default function AnalysePage() {
       setMuscleVolume(volumePerMuscle);
       setMaxVolume(max);
 
-      // -------------------------
-      // 2) BAR CHART – Belastung pro Übung
-      // -------------------------
       const exerciseMap = {};
 
       for (const entry of allEntries) {
@@ -189,9 +172,6 @@ export default function AnalysePage() {
       setExerciseNames(Object.keys(exerciseMap));
       setExerciseVolumes(Object.values(exerciseMap));
 
-      // -------------------------
-      // 3) LINE CHART – Wochenbelastung
-      // -------------------------
       const weekMap = {};
 
       for (const entry of allEntries) {
@@ -222,9 +202,6 @@ export default function AnalysePage() {
       setWeekLabels(sortedWeeks);
       setWeekVolumes(sortedWeeks.map((w) => weekMap[w]));
 
-      // -------------------------
-      // 4) DONUT – Muskelgruppen
-      // -------------------------
       setDonutLabels(Object.keys(volumePerMuscle));
       setDonutValues(Object.values(volumePerMuscle));
     }
@@ -233,44 +210,50 @@ export default function AnalysePage() {
   }, []);
 
   return (
-    <div className="w-full min-h-screen bg-black flex flex-col items-center px-4 pb-24">
+    <div className="w-full min-h-screen bg-black flex flex-col items-center px-2 sm:px-4 pb-24">
+
       {/* HEADER */}
-      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-8 shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-4xl mt-10 text-center">
-        <h1 className="text-4xl font-extrabold text-[#00ff9d]">Analyse</h1>
-        <p className="text-gray-400 mt-2">
+      <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-6 sm:p-8 
+                      shadow-[0_0_25px_rgba(0,255,150,0.25)] w-full max-w-full lg:max-w-4xl mt-10 text-center">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-[#00ff9d]">Analyse</h1>
+        <p className="text-gray-400 mt-2 text-sm sm:text-base">
           Muskelbelastung basierend auf realistischen Prozentanteilen
         </p>
       </div>
 
       {/* HEATMAP SECTION */}
-      <div className="w-full max-w-4xl mt-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-6 shadow-[0_0_25px_rgba(0,255,150,0.25)] flex flex-col items-center">
+      <div className="w-full max-w-full lg:max-w-4xl mt-10 grid grid-cols-1 xl:grid-cols-2 gap-6">
+        <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-6 
+                        shadow-[0_0_25px_rgba(0,255,150,0.25)] flex flex-col items-center">
           <h2 className="text-2xl font-bold mb-4 text-[#00ff9d]">Körper‑Heatmap</h2>
           <SilhouetteHeatmap muscleVolume={muscleVolume} maxVolume={maxVolume} />
         </div>
 
-        <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-6 shadow-[0_0_25px_rgba(0,255,150,0.25)]">
+        <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-6 
+                        shadow-[0_0_25px_rgba(0,255,150,0.25)]">
           <h2 className="text-2xl font-bold mb-4 text-[#00ff9d]">Muskelgruppen Übersicht</h2>
           <MuscleGrid muscleVolume={muscleVolume} maxVolume={maxVolume} />
         </div>
       </div>
 
       {/* CHART SECTION */}
-      <div className="w-full max-w-4xl mt-10 grid grid-cols-1 gap-6">
-        <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-6">
+      <div className="w-full max-w-full lg:max-w-4xl mt-10 grid grid-cols-1 gap-6">
+
+        <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-6 h-[300px] sm:h-[400px]">
           <h2 className="text-2xl font-bold mb-4 text-[#00ff9d]">Belastung pro Übung</h2>
           <NeonBarChart labels={exerciseNames} values={exerciseVolumes} />
         </div>
 
-        <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-6">
+        <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-6 h-[300px] sm:h-[400px]">
           <h2 className="text-2xl font-bold mb-4 text-[#00ff9d]">Wochenbelastung</h2>
           <NeonLineChart labels={weekLabels} values={weekVolumes} />
         </div>
 
-        <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-6">
+        <div className="bg-black backdrop-blur-xl border border-gray-700 rounded-2xl p-6 h-[300px] sm:h-[400px]">
           <h2 className="text-2xl font-bold mb-4 text-[#00ff9d]">Muskelgruppen‑Verteilung</h2>
           <NeonDonutChart labels={donutLabels} values={donutValues} />
         </div>
+
       </div>
     </div>
   );
@@ -282,14 +265,12 @@ function SilhouetteHeatmap({ muscleVolume, maxVolume }) {
   const get = (name) => getHeatColor(muscleVolume[name] || 0, maxVolume);
 
   return (
-    <div className="flex flex-col items-center gap-6">
+    <div className="flex flex-col items-center gap-6 w-full">
       {/* FRONT */}
-      <div className="relative">
+      <div className="relative w-full max-w-[220px] sm:max-w-[260px]">
         <svg
-          width="180"
-          height="360"
           viewBox="0 0 180 360"
-          className="drop-shadow-[0_0_25px_rgba(0,255,150,0.35)]"
+          className="w-full h-auto drop-shadow-[0_0_25px_rgba(0,255,150,0.35)]"
         >
           <path
             d="M90 10 C70 10 55 30 55 55 L55 90 C55 110 45 130 45 150 L45 260 C45 290 60 320 90 320 C120 320 135 290 135 260 L135 150 C135 130 125 110 125 90 L125 55 C125 30 110 10 90 10 Z"
@@ -310,12 +291,10 @@ function SilhouetteHeatmap({ muscleVolume, maxVolume }) {
       </div>
 
       {/* BACK */}
-      <div className="relative">
+      <div className="relative w-full max-w-[220px] sm:max-w-[260px]">
         <svg
-          width="180"
-          height="360"
           viewBox="0 0 180 360"
-          className="drop-shadow-[0_0_25px_rgba(0,255,150,0.35)]"
+          className="w-full h-auto drop-shadow-[0_0_25px_rgba(0,255,150,0.35)]"
         >
           <path
             d="M90 10 C70 10 55 30 55 55 L55 90 C55 110 45 130 45 150 L45 260 C45 290 60 320 90 320 C120 320 135 290 135 260 L135 150 C135 130 125 110 125 90 L125 55 C125 30 110 10 90 10 Z"
