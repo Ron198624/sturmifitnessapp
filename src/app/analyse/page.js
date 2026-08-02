@@ -320,7 +320,7 @@ function SilhouetteHeatmap({ muscleVolume, maxVolume }) {
 
 function MuscleGrid({ muscleVolume, maxVolume }) {
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {MUSCLE_GROUPS.map((m) => {
         const value = muscleVolume[m] || 0;
         const color = getHeatColor(value, maxVolume);
